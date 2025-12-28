@@ -79,8 +79,8 @@
       "name": "linc_luajit",
       "type": "git",
       "dir": null,
-      "ref": "main",
-      "url": "https://github.com/kittycathy233/linc_luajit"
+      "ref": "master",
+      "url": "https://github.com/superpowers04/linc_luajit"
     },
     {
       "name": "extension-androidtools",
