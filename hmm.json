@@ -48,8 +48,8 @@
       "name": "SScript",
       "type": "git",
       "dir": null,
-      "ref": "main",
-      "url": "https://github.com/DeveloperPorting-Stuff/SScript-7.7.0"
+      "ref": "master",
+      "url": "https://github.com/vilgaxhax/SScript"
     },
     {
       "name": "hxcpp-debug-server",
