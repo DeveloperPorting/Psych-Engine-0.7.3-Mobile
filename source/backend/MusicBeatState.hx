@@ -4,9 +4,17 @@ import flixel.addons.ui.FlxUIState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxState;
 import backend.PsychCamera;
+#if mobile
+import mobile.controls.MobileHitbox;
+import mobile.controls.MobileVirtualPad;
+import flixel.util.FlxDestroyUtil;
+import flixel.FlxCamera;
+#end
 
 class MusicBeatState extends FlxUIState
 {
+	public static var instance:MusicBeatState;
+	
 	private var curSection:Int = 0;
 	private var stepsToDo:Int = 0;
 
@@ -20,6 +28,77 @@ class MusicBeatState extends FlxUIState
 	{
 		return Controls.instance;
 	}
+
+	#if mobile
+	public var mobileHitbox:MobileHitbox;
+	public var virtualPad:MobileVirtualPad;
+
+	public var vpadCam:FlxCamera;
+	public var camControls:FlxCamera;
+
+	
+    public function addVirtualPad(DPad:MobileDPadMode, Action:MobileActionMode)
+	{
+		if (virtualPad != null)
+			removeVirtualPad();
+
+		virtualPad = new MobileVirtualPad(DPad, Action);
+		add(virtualPad);
+	}
+
+	public function removeVirtualPad()
+	{
+		if (virtualPad != null)
+			remove(virtualPad);
+	}
+
+	public function addMobileHitbox()
+	{
+		mobileHitbox = new MobileHitbox();
+
+		camControls = new FlxCamera();
+		camControls.bgColor.alpha = 0;
+		FlxG.cameras.add(camControls, false);
+
+		mobileHitbox.cameras = [camControls];
+		mobileHitbox.visible = false;
+		add(mobileHitbox);
+	}
+
+	public function removeMobileHitbox()
+	{
+		if (mobileHitbox != null)
+			remove(mobileHitbox);
+	}
+
+	public function addVirtualPadCamera()
+	{
+		if (virtualPad != null)
+		{
+			vpadCam = new FlxCamera();
+			FlxG.cameras.add(vpadCam, false);
+			vpadCam.bgColor.alpha = 0;
+			virtualPad.cameras = [vpadCam];
+		}
+	}
+
+	override function destroy()
+	{
+		super.destroy();
+
+		if (virtualPad != null)
+		{
+			virtualPad = FlxDestroyUtil.destroy(virtualPad);
+			virtualPad = null;
+		}
+
+		if (mobileHitbox != null)
+		{
+			mobileHitbox = FlxDestroyUtil.destroy(mobileHitbox);
+			mobileHitbox = null;
+		}
+	}
+	#end
 
 	var _psychCameraInitialized:Bool = false;
 
