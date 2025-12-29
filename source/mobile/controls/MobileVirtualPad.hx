@@ -7,6 +7,7 @@ import flixel.graphics.frames.FlxTileFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
 import flixel.util.FlxDestroyUtil;
+import openfl.utils.Assets;
 import mobile.input.FlxMobileInputID;
 import mobile.input.FlxMobileInputManager;
 import mobile.FlxButton;
@@ -127,10 +128,14 @@ class MobileVirtualPad extends FlxMobileInputManager {
 		buttonC = FlxDestroyUtil.destroy(buttonC);
   }
 
-  private function createButton(X:Float, Y:Float, MobileGraphic:String):FlxButton {
+  private function createButton(X:Float, Y:Float, Graphic:String):FlxButton {
    
 		var graphic:FlxGraphic;
-		graphic = FlxG.bitmap.add('assets/mobile/virtualpad/${MobileGraphic}.png');
+	  
+		if (Assets.exists('assets/mobile/virtualpad/${Graphic}.png'))
+			graphic = FlxG.bitmap.add('assets/mobile/virtualpad/${Graphic}.png');
+		else
+			graphic = FlxG.bitmap.add('assets/mobile/virtualpad/default.png');
 
 		var button:FlxButton = new FlxButton(X, Y);
 		button.frames = FlxTileFrames.fromGraphic(graphic, FlxPoint.get(Std.int(graphic.width / 3), graphic.height));
