@@ -951,7 +951,7 @@ class PlayState extends MusicBeatState
 		}
 
 		#if mobile
-		mobileControls.visible = true;
+		mobileHitbox.visible = true;
 		#end
 
 		seenCutscene = true;
@@ -2315,7 +2315,7 @@ class PlayState extends MusicBeatState
 		}
 
 		#if mobile
-		mobileControls.visible = false;
+		mobileHitbox.visible = false;
 		#end
 
 		timeBar.visible = false;
