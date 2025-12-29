@@ -8,6 +8,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
 import flixel.util.FlxDestroyUtil;
 import openfl.utils.Assets;
+import openfl.display.BitmapData;
 import mobile.input.FlxMobileInputID;
 import mobile.input.FlxMobileInputManager;
 import mobile.FlxButton;
