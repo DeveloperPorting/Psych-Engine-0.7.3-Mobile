@@ -162,7 +162,7 @@ class Controls
 
 	public var isInSubstate:Bool = false; // don't worry about this it becomes true and false on it's own in MusicBeatSubstate
 	public var requestedInstance(get, default):Dynamic; // is set to MusicBeatState or MusicBeatSubstate when the constructor is called
-	public var requestedHitbox(get, default):FunkinHitbox; // for PlayState and EditorPlayState
+	public var requestedHitbox(get, default):Dynamic; // for PlayState and EditorPlayState
 
 	private function mobilePadPressed(keys:Array<FlxMobileInputID>):Bool
 	{
