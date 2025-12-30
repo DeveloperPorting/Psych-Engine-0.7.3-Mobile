@@ -55,6 +55,12 @@ class MobileVirtualPad extends FlxMobileInputManager {
 
 	var storedButtonsIDs:Map<String, Array<FlxMobileInputID>> = new Map<String, Array<FlxMobileInputID>>();
 
+	/**
+	 * Create the VirtualPad.
+	 *
+	 * @param   DPadMode     The D-Pad mode. `LEFT_FULL` for example.
+	 * @param   ActionMode   The action buttons mode. `A_B_C` for example.
+	 */
     public function new(DPad:MobileDPadMode, Action:MobileActionMode) {
 
     super();
