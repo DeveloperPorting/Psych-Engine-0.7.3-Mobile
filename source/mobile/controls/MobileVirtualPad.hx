@@ -7,7 +7,7 @@ import flixel.graphics.frames.FlxTileFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
 import flixel.util.FlxDestroyUtil;
-import mobile.flixel.FlxButton;
+import mobile.FlxButton;
 import openfl.display.BitmapData;
 import openfl.utils.Assets;
 import mobile.input.FlxMobileInputManager;
@@ -202,7 +202,7 @@ class MobileVirtualPad extends FlxMobileInputManager {
 		button.immovable = true;
 		button.scrollFactor.set();
 		button.color = Color;
-		button.alpha = 0.6;
+		button.alpha = 0.5;
 		#if FLX_DEBUG
 		button.ignoreDrawDebug = true;
 		#end
