@@ -1,102 +1,71 @@
 package mobile.controls;
 
 import flixel.FlxG;
-import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxDestroyUtil;
-import openfl.display.BitmapData;
-import openfl.display.Shape;
+import flixel.util.FlxColor;
 import mobile.FlxButton;
 import mobile.input.FlxMobileInputManager;
 import mobile.input.FlxMobileInputID;
-import haxe.ds.Map;
 
 /**
- * A Hitbox
- *
+ * Hitbox... what were you expecting?
  * @author StarNova (CreamBR)
  */
 class MobileHitbox extends FlxMobileInputManager {
 
-	public var buttonLeft:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.hitboxLEFT, FlxMobileInputID.noteLEFT]);
-	public var buttonDown:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.hitboxDOWN, FlxMobileInputID.noteDOWN]);
-	public var buttonUp:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.hitboxUP, FlxMobileInputID.noteUP]);
-	public var buttonRight:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.hitboxRIGHT, FlxMobileInputID.noteRIGHT]);
+	public var buttonLeft:FlxButton;
+	public var buttonDown:FlxButton;
+	public var buttonUp:FlxButton;
+	public var buttonRight:FlxButton;
 
-	var storedButtonsIDs:Map<String, Array<FlxMobileInputID>> = new Map<String, Array<FlxMobileInputID>>();
-
-	/**
-	 * Create the zone.
-	 */
-	public function new(ButtonNumber:Int = 0):Void
+	public function new():Void
 	{
 		super();
 
-		for (button in Reflect.fields(this))
-		{
-			if (Std.isOfType(Reflect.field(this, button), FlxButton))
-				storedButtonsIDs.set(button, Reflect.getProperty(Reflect.field(this, button), 'IDs'));
-		}
+		var w:Int = Std.int(FlxG.width / 4);
+		var h:Int = FlxG.height;
 
-			add(buttonLeft = createHint(0, 0, Std.int(FlxG.width / 4), FlxG.height, 0xFF00FF));
-			add(buttonDown = createHint(FlxG.width / 4, 0, Std.int(FlxG.width / 4), FlxG.height, 0x00FFFF));
-			add(buttonUp = createHint(FlxG.width / 2, 0, Std.int(FlxG.width / 4), FlxG.height, 0x00FF00));
-			add(buttonRight = createHint((FlxG.width / 2) + (FlxG.width / 4), 0, Std.int(FlxG.width / 4), FlxG.height, 0xFF0000));
+		add(buttonLeft = createHint(0, 0, w, h, 0xFF00FF, [hitboxLEFT, noteLEFT]));
+		add(buttonDown = createHint(w, 0, w, h, 0x00FFFF, [hitboxDOWN, noteDOWN]));
+		add(buttonUp = createHint(w * 2, 0, w, h, 0x00FF00, [hitboxUP, noteUP]));
+		add(buttonRight = createHint(w * 3, 0, w, h, 0xFF0000, [hitboxRIGHT, noteRIGHT]));
 		
-		for (button in Reflect.fields(this))
-		{
-			if (Std.isOfType(Reflect.field(this, button), FlxButton))
-				Reflect.setProperty(Reflect.getProperty(this, button), 'IDs', storedButtonsIDs.get(button));
-		}
+		scrollFactor.set();
 		updateTrackedButtons();
 	}
 
-	/**
-	 * Clean up memory.
-	 */
 	override function destroy():Void
 	{
 		super.destroy();
 
 		buttonLeft = FlxDestroyUtil.destroy(buttonLeft);
-		buttonUp = FlxDestroyUtil.destroy(buttonUp);
 		buttonDown = FlxDestroyUtil.destroy(buttonDown);
+		buttonUp = FlxDestroyUtil.destroy(buttonUp);
 		buttonRight = FlxDestroyUtil.destroy(buttonRight);
 	}
 
-	private function createHintGraphic(Width:Int, Height:Int, Color:Int = 0xFFFFFF):BitmapData
+	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:FlxColor, IDs:Array<FlxMobileInputID>):FlxButton
 	{
-		var shape:Shape = new Shape();
-		shape.graphics.beginFill(Color);
-		shape.graphics.lineStyle(10, Color, 1);
-		shape.graphics.drawRect(0, 0, Width, Height);
-		shape.graphics.endFill();
+		var hint:FlxButton = new FlxButton(X, Y, IDs);
+		
+		hint.makeGraphic(1, 1, FlxColor.WHITE);
+		hint.scale.set(Width, Height);
+		hint.updateHitbox(); 
 
-		var bitmap:BitmapData = new BitmapData(Width, Height, true, 0);
-		bitmap.draw(shape);
-		return bitmap;
-	}
-
-	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF):FlxButton
-	{
-		var hint:FlxButton = new FlxButton(X, Y);
-		hint.loadGraphic(createHintGraphic(Width, Height, Color));
+		hint.color = Color;
+		hint.alpha = 0.00001;
 		hint.solid = false;
 		hint.immovable = true;
 		hint.scrollFactor.set();
-		hint.alpha = 0.00001;
-		hint.onDown.callback = hint.onOver.callback = function()
-		{
-			if (hint.alpha != 0.2)
-				hint.alpha = 0.2;
-		}
-		hint.onUp.callback = hint.onOut.callback = function()
-		{
-			if (hint.alpha != 0.00001)
-				hint.alpha = 0.00001;
-		}
+
+		// So here you go
+		hint.onDown.callback = hint.onOver.callback = function() hint.alpha = 0.2;
+		hint.onUp.callback = hint.onOut.callback = function() hint.alpha = 0.00001;
+
 		#if FLX_DEBUG
 		hint.ignoreDrawDebug = true;
 		#end
+
 		return hint;
 	}
 }
