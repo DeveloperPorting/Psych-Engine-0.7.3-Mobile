@@ -3,13 +3,9 @@ package backend;
 import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepadInputID;
-<<<<<<< HEAD
-import mobile.input.FlxMobileInputID;
-=======
 #if mobile
 import mobile.input.FlxMobileInputID;
 #end
->>>>>>> 617573a (Reformar Repo)
 
 import states.TitleState;
 

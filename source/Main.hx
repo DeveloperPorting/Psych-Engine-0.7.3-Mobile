@@ -119,19 +119,11 @@ class Main extends Sprite
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
 		#end
-<<<<<<< HEAD
-
-		#if android
-		FlxG.android.preventDefaultKeys = [BACK];
-		#end
-
-=======
 		
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 		
->>>>>>> 617573a (Reformar Repo)
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
