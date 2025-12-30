@@ -45,8 +45,8 @@ class MusicBeatState extends FlxUIState
 		virtualPad = new MobileVirtualPad(DPad, Action);
 		
 		vpadCam = new FlxCamera();
-		FlxG.cameras.add(vpadCam, false);
 		vpadCam.bgColor.alpha = 0;
+		FlxG.cameras.add(vpadCam, false);
 		
 		virtualPad.cameras = [vpadCam];
 		add(virtualPad);
