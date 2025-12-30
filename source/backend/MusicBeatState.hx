@@ -6,7 +6,7 @@ import flixel.FlxState;
 import backend.PsychCamera;
 #if mobile
 import mobile.controls.MobileHitbox;
-//import mobile.controls.MobileVirtualPad;
+import mobile.controls.MobileVirtualPad;
 import flixel.util.FlxDestroyUtil;
 import flixel.FlxCamera;
 #end
@@ -31,13 +31,13 @@ class MusicBeatState extends FlxUIState
 	
 	#if mobile
 	public var mobileHitbox:MobileHitbox;
-	//public var virtualPad:MobileVirtualPad;
+	public var virtualPad:MobileVirtualPad;
 
 	//public var vpadCam:FlxCamera;
 	public var camControls:FlxCamera;
 
 	
-    /*public function addVirtualPad(DPad:MobileDPadMode, Action:MobileActionMode)
+    public function addVirtualPad(DPad:MobileDPadMode, Action:MobileActionMode)
 	{
 		if (virtualPad != null)
 			removeVirtualPad();
@@ -50,7 +50,7 @@ class MusicBeatState extends FlxUIState
 	{
 		if (virtualPad != null)
 			remove(virtualPad);
-	}*/
+	}
 
 	public function addMobileHitbox()
 	{
@@ -75,11 +75,11 @@ class MusicBeatState extends FlxUIState
 	{
 		super.destroy();
 
-		/*if (virtualPad != null)
+		if (virtualPad != null)
 		{
 			virtualPad = FlxDestroyUtil.destroy(virtualPad);
 			virtualPad = null;
-		}*/
+		}
 
 		if (mobileHitbox != null)
 		{
