@@ -129,7 +129,7 @@ class MobileVirtualPad extends FlxMobileInputManager {
 		buttonC = FlxDestroyUtil.destroy(buttonC);
   }
 
-  private function createButton(X:Float, Y:Float, Graphic:String):FlxButton {
+  private function createButton(X:Float, Y:Float, Graphic:String, Color:Int = 0xFFFFFF):FlxButton {
    
 		var graphic:FlxGraphic;
 	  
@@ -143,6 +143,7 @@ class MobileVirtualPad extends FlxMobileInputManager {
 		button.solid = false;
 		button.immovable = true;
 		button.scrollFactor.set();
+		button.color = Color;
 		button.alpha = 0.5;
 		#if FLX_DEBUG
 		button.ignoreDrawDebug = true;
