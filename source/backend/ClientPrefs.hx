@@ -3,7 +3,13 @@ package backend;
 import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepadInputID;
+<<<<<<< HEAD
 import mobile.input.FlxMobileInputID;
+=======
+#if mobile
+import mobile.input.FlxMobileInputID;
+#end
+>>>>>>> 617573a (Reformar Repo)
 
 import states.TitleState;
 
@@ -123,7 +129,6 @@ class ClientPrefs {
 		'pause'			=> [START],
 		'reset'			=> [BACK]
 	];
-
 	public static var mobileBinds:Map<String, Array<FlxMobileInputID>> = [
 		'note_up'		=> [noteUP, UP2],
 		'note_left'		=> [noteLEFT, LEFT2],
