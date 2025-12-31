@@ -15,12 +15,12 @@
     {
       "name": "flixel",
       "type": "haxelib",
-      "version": "5.5.0"
+      "version": "4.11.0"
     },
     {
       "name": "flixel-addons",
       "type": "haxelib",
-      "version": "3.0.2"
+      "version": "2.11.0"
     },
     {
       "name": "flixel-tools",
@@ -30,7 +30,7 @@
     {
       "name": "flixel-ui",
       "type": "haxelib",
-      "version": "2.5.0"
+      "version": "2.3.3"
     },
     {
       "name": "hxcpp",
