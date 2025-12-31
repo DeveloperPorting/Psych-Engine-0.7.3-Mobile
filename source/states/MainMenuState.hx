@@ -107,6 +107,11 @@ class MainMenuState extends MusicBeatState
 		Achievements.reloadList();
 		#end
 		#end
+		
+		#if mobile
+		addVirtualPad(UP_DOWN, A_B);
+		addVirtualPadCamera();
+		#end
 
 		super.create();
 

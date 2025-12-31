@@ -572,6 +572,12 @@ class PlayState extends MusicBeatState
 		comboGroup.cameras = [camHUD];
 
 		startingSong = true;
+		
+		#if mobile
+		    addMobileControls(false);
+			mobileControls.visible = false;
+		#end
+		
 
 		#if LUA_ALLOWED
 		for (notetype in noteTypes)
@@ -940,6 +946,9 @@ class PlayState extends MusicBeatState
 
 	public function startCountdown()
 	{
+	    #if mobile
+			mobileControls.visible = true;
+		#end
 		if(startedCountdown) {
 			callOnScripts('onStartCountdown');
 			return false;
@@ -2304,6 +2313,10 @@ class PlayState extends MusicBeatState
 				return false;
 			}
 		}
+		
+		#if mobile
+			mobileControls.visible = false;
+		#end
 
 		timeBar.visible = false;
 		timeTxt.visible = false;
