@@ -26,16 +26,16 @@ enum MobileActionMode {
 
 class MobileVirtualPad extends FlxMobileInputManager {
   
-    public var buttonLeft:FlxButton;
-    public var buttonUp:FlxButton;
-    public var buttonRight:FlxButton;
-    public var buttonDown:FlxButton;
+    public var buttonLeft:MobileButton;
+    public var buttonUp:MobileButton;
+    public var buttonRight:MobileButton;
+    public var buttonDown:MobileButton;
   
-    public var buttonA:FlxButton;
-    public var buttonB:FlxButton;
-    public var buttonC:FlxButton;
+    public var buttonA:MobileButton;
+    public var buttonB:MobileButton;
+    public var buttonC:MobileButton;
 
-    private var _buttons:Array<FlxButton> = [];
+    private var _buttons:Array<MobileButton> = [];
 
     public function new(DPad:MobileDPadMode, Action:MobileActionMode)
     {
@@ -81,13 +81,13 @@ class MobileVirtualPad extends FlxMobileInputManager {
         updateTrackedButtons();
     }
 
-    private function createButton(x:Float, y:Float, graphicName:String, color:Int, ids:Array<FlxMobileInputID>):FlxButton
+    private function createButton(x:Float, y:Float, graphicName:String, color:Int, ids:Array<FlxMobileInputID>):MobileButton
     {
         var path:String = 'assets/mobile/virtualpad/${graphicName}.png';
         if (!Assets.exists(path)) path = 'assets/mobile/virtualpad/default.png';
 
         var graphic:FlxGraphic = FlxG.bitmap.add(path);
-        var button:FlxButton = new FlxButton(x, y, ids);
+        var button:MobileButton = new MobileButton(x, y, ids);
         
         button.frames = FlxTileFrames.fromGraphic(graphic, FlxPoint.get(Std.int(graphic.width / 3), graphic.height));
         button.solid = false;

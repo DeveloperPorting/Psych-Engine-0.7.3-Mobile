@@ -3,7 +3,7 @@ package mobile.controls;
 import flixel.FlxG;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxColor;
-import mobile.FlxButton;
+import mobile.MobileButton;
 import mobile.input.FlxMobileInputManager;
 import mobile.input.FlxMobileInputID;
 
@@ -13,10 +13,10 @@ import mobile.input.FlxMobileInputID;
  */
 class MobileHitbox extends FlxMobileInputManager {
 
-	public var buttonLeft:FlxButton;
-	public var buttonDown:FlxButton;
-	public var buttonUp:FlxButton;
-	public var buttonRight:FlxButton;
+	public var buttonLeft:MobileButton;
+	public var buttonDown:MobileButton;
+	public var buttonUp:MobileButton;
+	public var buttonRight:MobileButton;
 
 	public function new():Void
 	{
@@ -44,9 +44,9 @@ class MobileHitbox extends FlxMobileInputManager {
 		buttonRight = FlxDestroyUtil.destroy(buttonRight);
 	}
 
-	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:FlxColor, IDs:Array<FlxMobileInputID>):FlxButton
+	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:FlxColor, IDs:Array<FlxMobileInputID>):MobileButton
 	{
-		var hint:FlxButton = new FlxButton(X, Y, IDs);
+		var hint:MobileButton = new MobileButton(X, Y, IDs);
 		
 		hint.makeGraphic(1, 1, FlxColor.WHITE);
 		hint.scale.set(Width, Height);
@@ -61,10 +61,6 @@ class MobileHitbox extends FlxMobileInputManager {
 		// So here you go
 		hint.onDown.callback = hint.onOver.callback = function() hint.alpha = 0.2;
 		hint.onUp.callback = hint.onOut.callback = function() hint.alpha = 0.00001;
-
-		#if FLX_DEBUG
-		hint.ignoreDrawDebug = true;
-		#end
 
 		return hint;
 	}
