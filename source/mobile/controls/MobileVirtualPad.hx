@@ -95,10 +95,7 @@ class MobileVirtualPad extends FlxMobileInputManager {
         button.scrollFactor.set();
         button.color = color;
         button.alpha = 0.5;
-        
-        #if FLX_DEBUG
-        button.ignoreDrawDebug = true;
-        #end
+ 
 
         add(button);
         _buttons.push(button);
