@@ -4,7 +4,7 @@ import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepadInputID;
 #if mobile
-import mobile.input.FlxMobileInputID;
+import mobile.flixel.input.FlxMobileInputID;
 #end
 
 import states.TitleState;

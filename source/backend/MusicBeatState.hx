@@ -5,7 +5,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxState;
 import backend.PsychCamera;
 import flixel.FlxCamera;
-import mobile.MobileControls;
+import mobile.flixel.FlxHitbox;
 import mobile.flixel.FlxVirtualPad;
 import flixel.util.FlxDestroyUtil;
 
@@ -26,7 +26,7 @@ class MusicBeatState extends FlxUIState
 	}
 	
 	public static var instance:MusicBeatState;
-	public var mobileControls:MobileControls;
+	public var mobileControls:FlxHitbox;
 	public var virtualPad:FlxVirtualPad;
 
 	public var vpadCam:FlxCamera;
@@ -48,9 +48,9 @@ class MusicBeatState extends FlxUIState
 			remove(virtualPad);
 	}
 
-	public function addMobileControls(DefaultDrawTarget:Bool = false, SpaceButton:Int = 0)
+	public function addMobileControls(DefaultDrawTarget:Bool = false)
 	{
-		mobileControls = new MobileControls(SpaceButton);
+		mobileControls = new FlxHitbox();
 
 		camControls = new FlxCamera();
 		camControls.bgColor.alpha = 0;
