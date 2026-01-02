@@ -14,7 +14,7 @@
     },
     {
       "name": "flixel",
-      "type": "gif",
+      "type": "git",
       "dir": null,
       "ref": "main",
       "url": "https://github.com/NovaFlare-Engine-haxelib/flixel-5.9.0"
