@@ -204,7 +204,7 @@ class Controls
 	@:noCompletion
 	private function get_requestedHitbox():MobileHitbox
 	{
-    	return requestedInstance.mobileManager.hitbox;
+    	return requestedHitbox.mobileManager.hitbox;
 	}
 
 	// IGNORE THESE
