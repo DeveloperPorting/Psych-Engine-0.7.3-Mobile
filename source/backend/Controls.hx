@@ -172,9 +172,9 @@ class Controls
     @:noCompletion
     public var requestedHitbox(get, never):MobileHitbox;
 
-    public function mobilePadPressed(keys:Array<FlxMobileInputID>)      return checkInput(requestedInstance?.virtualPad, keys, "pressed");
-    public function mobilePadJustPressed(keys:Array<FlxMobileInputID>)  return checkInput(requestedInstance?.virtualPad, keys, "justPressed");
-    public function mobilePadJustReleased(keys:Array<FlxMobileInputID>) return checkInput(requestedInstance?.virtualPad, keys, "justReleased");
+    public function mobilePadPressed(keys:Array<FlxMobileInputID>)      return checkInput(requestedInstance?.mobileManager.virtualPad, keys, "pressed");
+    public function mobilePadJustPressed(keys:Array<FlxMobileInputID>)  return checkInput(requestedInstance?.mobileManager.virtualPad, keys, "justPressed");
+    public function mobilePadJustReleased(keys:Array<FlxMobileInputID>) return checkInput(requestedInstance?.mobileManager.virtualPad, keys, "justReleased");
 
     public function hitboxPressed(keys:Array<FlxMobileInputID>)         return checkInput(requestedHitbox, keys, "pressed");
     public function hitboxJustPressed(keys:Array<FlxMobileInputID>)     return checkInput(requestedHitbox, keys, "justPressed");
