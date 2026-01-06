@@ -5,8 +5,8 @@ import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.mappings.FlxGamepadMapping;
 import flixel.input.keyboard.FlxKey;
 #if mobile
-import mobile.flixel.input.FlxMobileInputID;
-import mobile.flixel.FlxHitbox;
+import mobile.input.FlxMobileInputID;
+import mobile.controls.MobileHitbox;
 #end
 
 typedef MobileInputDevice = {
@@ -92,7 +92,7 @@ class Controls
 	private function get_PAUSE() return justPressed('pause');
 	private function get_RESET() return justPressed('reset');
 
-	//Gamepad, Keyboard & Mobile stuff
+	//Gamepad & Keyboard stuff
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
 	public var mobileBinds:Map<String, Array<FlxMobileInputID>>;
@@ -101,7 +101,7 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustPressed(gamepadBinds[key]) == true || hitboxJustPressed(mobileBinds[key]) == true || mobilePadJustPressed(mobileBinds[key]) == true;
+		return result || _myGamepadJustPressed(gamepadBinds[key]) == true;
 	}
 
 	public function pressed(key:String)
@@ -109,7 +109,7 @@ class Controls
 		var result:Bool = (FlxG.keys.anyPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadPressed(gamepadBinds[key]) == true || hitboxPressed(mobileBinds[key]) == true || mobilePadPressed(mobileBinds[key]) == true;
+		return result || _myGamepadPressed(gamepadBinds[key]) == true;
 	}
 
 	public function justReleased(key:String)
@@ -117,7 +117,7 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustReleased(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustReleased(gamepadBinds[key]) == true || hitboxJustReleased(mobileBinds[key]) == true || mobilePadJustReleased(mobileBinds[key]) == true;
+		return result || _myGamepadJustReleased(gamepadBinds[key]) == true;
 	}
 
 	public var controllerMode:Bool = false;
@@ -170,7 +170,7 @@ class Controls
 	@:noCompletion
     public var requestedInstance(get, never):Dynamic; 
     @:noCompletion
-    public var requestedHitbox(get, never):FlxHitbox;
+    public var requestedHitbox(get, never):MobileHitbox;
 
     public function mobilePadPressed(keys:Array<FlxMobileInputID>)      return checkInput(requestedInstance?.virtualPad, keys, "pressed");
     public function mobilePadJustPressed(keys:Array<FlxMobileInputID>)  return checkInput(requestedInstance?.virtualPad, keys, "justPressed");
@@ -202,9 +202,9 @@ class Controls
 	}
 
 	@:noCompletion
-	private function get_requestedHitbox():FlxHitbox
+	private function get_requestedHitbox():MobileHitbox
 	{
-    	return MusicBeatState.instance.mobileControls;
+    	return requestedInstance.mobileManager.hitbox;
 	}
 
 	// IGNORE THESE
