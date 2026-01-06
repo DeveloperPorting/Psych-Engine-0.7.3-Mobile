@@ -170,7 +170,7 @@ class Controls
 	@:noCompletion
     public var requestedInstance(get, never):Dynamic; 
     @:noCompletion
-    public var requestedHitbox(get, never):MobileHitbox;
+    public var requestedHitbox(get, never):Dynamic;
 
     public function mobilePadPressed(keys:Array<FlxMobileInputID>)      return checkInput(requestedInstance?.mobileManager.virtualPad, keys, "pressed");
     public function mobilePadJustPressed(keys:Array<FlxMobileInputID>)  return checkInput(requestedInstance?.mobileManager.virtualPad, keys, "justPressed");
@@ -202,7 +202,7 @@ class Controls
 	}
 
 	@:noCompletion
-	private function get_requestedHitbox():MobileHitbox
+	private function get_requestedHitbox():Dynamic
 	{
     	return requestedHitbox.mobileManager.hitbox;
 	}
