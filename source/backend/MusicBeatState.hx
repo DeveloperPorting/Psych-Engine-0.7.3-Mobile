@@ -4,12 +4,11 @@ import flixel.addons.ui.FlxUIState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxState;
 import backend.PsychCamera;
-import mobile.flixel.FlxHitbox;
-import mobile.flixel.FlxVirtualPad;
-import flixel.util.FlxDestroyUtil;
 
 class MusicBeatState extends FlxUIState
 {
+    public static var instance:MusicBeatState;
+    
 	private var curSection:Int = 0;
 	private var stepsToDo:Int = 0;
 
@@ -23,78 +22,21 @@ class MusicBeatState extends FlxUIState
 	{
 		return Controls.instance;
 	}
+
+	var _psychCameraInitialized:Bool = false;
 	
-	public static var instance:MusicBeatState;
-	public var mobileControls:FlxHitbox;
-	public var virtualPad:FlxVirtualPad;
-
-	public var vpadCam:FlxCamera;
-	public var camControls:FlxCamera;
-
+	public var mobileManager:MobileManagerControls;
 	
-    public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode)
-	{
-		if (virtualPad != null)
-			removeVirtualPad();
-
-		virtualPad = new FlxVirtualPad(DPad, Action);
-		add(virtualPad);
-	}
-
-	public function removeVirtualPad()
-	{
-		if (virtualPad != null)
-			remove(virtualPad);
-	}
-
-	public function addMobileControls(DefaultDrawTarget:Bool = false)
-	{
-		mobileControls = new FlxHitbox();
-
-		camControls = new FlxCamera();
-		camControls.bgColor.alpha = 0;
-		FlxG.cameras.add(camControls, DefaultDrawTarget);
-
-		mobileControls.cameras = [camControls];
-		mobileControls.visible = false;
-		add(mobileControls);
-	}
-
-	public function removeMobileControls()
-	{
-		if (mobileControls != null)
-			remove(mobileControls);
-	}
-
-	public function addVirtualPadCamera(DefaultDrawTarget:Bool = false)
-	{
-		if (virtualPad != null)
-		{
-			vpadCam = new FlxCamera();
-			vpadCam.bgColor.alpha = 0;
-			FlxG.cameras.add(vpadCam, DefaultDrawTarget);
-			virtualPad.cameras = [vpadCam];
-		}
+	public function new() {
+		super();
+		mobileManager = new MobileManagerControls(this);
 	}
 
 	override function destroy()
 	{
-		if (virtualPad != null)
-		{
-			virtualPad = FlxDestroyUtil.destroy(virtualPad);
-			virtualPad = null;
-		}
-
-		if (mobileControls != null)
-		{
-			mobileControls = FlxDestroyUtil.destroy(mobileControls);
-			virtualPad = null;
-		}
-		
+		if (mobileManager != null) mobileManager.destroy();
 		super.destroy();
 	}
-
-	var _psychCameraInitialized:Bool = false;
 
 	override function create() {
 	    instance = this;

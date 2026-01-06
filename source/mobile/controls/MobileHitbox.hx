@@ -1,4 +1,4 @@
-package mobile.flixel;
+package mobile.controls;
 
 import flixel.FlxG;
 import flixel.group.FlxSpriteGroup;
@@ -16,7 +16,7 @@ import haxe.ds.Map;
  *
  * @author Mihai Alexandru (M.A. Jigsaw)
  */
-class FlxHitbox extends FlxMobileInputManager
+class MobileHitbox extends FlxMobileInputManager
 {
 	public var buttonLeft:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.hitboxLEFT, FlxMobileInputID.noteLEFT]);
 	public var buttonDown:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.hitboxDOWN, FlxMobileInputID.noteDOWN]);

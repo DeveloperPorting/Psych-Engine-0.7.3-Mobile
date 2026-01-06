@@ -22,6 +22,7 @@ import js.html.*;
 #end
 
 #if mobile
+import mobile.MobileManagerControls;
 import mobile.backend.StorageSystem;
 #end
 

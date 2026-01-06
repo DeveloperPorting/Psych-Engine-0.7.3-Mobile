@@ -1,4 +1,4 @@
-package mobile.flixel;
+package mobile.controls;
 
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
@@ -13,7 +13,7 @@ import openfl.utils.Assets;
 import mobile.flixel.input.FlxMobileInputManager;
 import mobile.flixel.input.FlxMobileInputID;
 import states.PlayState;
-enum FlxDPadMode
+enum MobileDPadMode
 {
 	UP_DOWN;
 	LEFT_RIGHT;
@@ -25,7 +25,7 @@ enum FlxDPadMode
 	NONE;
 }
 
-enum FlxActionMode
+enum MobileActionMode
 {
 	A;
 	B;
@@ -47,7 +47,7 @@ enum FlxActionMode
  * @author Ka Wing Chin
  * @author Mihai Alexandru (M.A. Jigsaw)
  */
-class FlxVirtualPad extends FlxMobileInputManager
+class MobileVirtualPad extends FlxMobileInputManager
 {
 	public var buttonLeft:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.LEFT, FlxMobileInputID.noteLEFT]);
 	public var buttonUp:FlxButton = new FlxButton(0, 0, [FlxMobileInputID.UP, FlxMobileInputID.noteUP]);
@@ -77,7 +77,7 @@ class FlxVirtualPad extends FlxMobileInputManager
 	 * @param   DPadMode     The D-Pad mode. `LEFT_FULL` for example.
 	 * @param   ActionMode   The action buttons mode. `A_B_C` for example.
 	 */
-	public function new(DPad:FlxDPadMode, Action:FlxActionMode)
+	public function new(DPad:MobileDPadMode, Action:MobileActionMode)
 	{
 		super();
 		for (button in Reflect.fields(this))
