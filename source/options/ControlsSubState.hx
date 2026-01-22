@@ -67,6 +67,10 @@ class ControlsSubState extends MusicBeatSubstate
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Controls Menu", null);
 		#end
+		
+		#if mobile
+        controls.isInSubstate = true;
+        #end
 
 		options.push([true]);
 		options.push([true]);
@@ -108,6 +112,10 @@ class ControlsSubState extends MusicBeatSubstate
 		text.alignment = CENTERED;
 		text.setScale(0.4);
 		add(text);
+		
+		#if mobile
+		addVirtualPad(LEFT_FULL, A_B);
+		#end
 
 		createTexts();
 	}

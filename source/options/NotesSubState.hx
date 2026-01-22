@@ -166,6 +166,10 @@ class NotesSubState extends MusicBeatSubstate
 		FlxG.mouse.visible = !controls.controllerMode;
 		controllerPointer.visible = controls.controllerMode;
 		_lastControllerMode = controls.controllerMode;
+		
+		#if mobile
+		addVirtualPad(NONE, B);
+		#end
 	}
 
 	function updateTip()

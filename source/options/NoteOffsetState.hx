@@ -166,6 +166,11 @@ class NoteOffsetState extends MusicBeatState
 		
 		updateMode();
 		_lastControllerMode = true;
+		
+		#if mobile
+		addVirtualPad(LEFT_FULL, A_B);
+		addVirtualPadCamera();
+		#end
 
 		Conductor.bpm = 128.0;
 		FlxG.sound.playMusic(Paths.music('offsetSong'), 1, true);
