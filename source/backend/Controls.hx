@@ -7,8 +7,6 @@ import flixel.input.keyboard.FlxKey;
 #if mobile
 import mobile.flixel.input.FlxMobileInputID;
 #end
-import backend.MusicBeatState;
-import backend.MusicBeatSubstate;
 
 class Controls
 {
@@ -248,7 +246,7 @@ class Controls
 	private function get_requested():Dynamic
 	{	
 		if (isInSubstate)
-			return MusicBeatSubState.instance;
+			return MusicBeatSubstate.instance;
         else
 			return MusicBeatState.instance;
 	}
