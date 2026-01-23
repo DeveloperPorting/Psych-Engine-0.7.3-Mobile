@@ -25,7 +25,7 @@ using StringTools;
 class StorageSystem {
   
     public static inline function getStorageDirectory():String
-	  	return #if android haxe.io.Path.addTrailingSlash(Environment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file')) #elseif ios lime.system.System.documentsDirectory #else Sys.getCwd() #end;
+	  	return #if android Path.addTrailingSlash(Environment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file')) #elseif ios lime.system.System.documentsDirectory #else Sys.getCwd() #end;
 	
 	public static function getDirectory():String
 	{
@@ -43,6 +43,7 @@ class StorageSystem {
      */
     public static function getPermissions():Void {
         #if android
+        try {
         var needsPermissions:Bool = false;
         var sdk:Int = VERSION.SDK_INT;
         
@@ -52,9 +53,7 @@ class StorageSystem {
             // Android 13+
             if (!granted.contains('READ_MEDIA_IMAGES') || !granted.contains('READ_MEDIA_AUDIO')) {
                 needsPermissions = true;
-                Permissions.requestPermissions([
-                    'READ_MEDIA_IMAGES', 'READ_MEDIA_VIDEO', 'READ_MEDIA_AUDIO', 'READ_MEDIA_VISUAL_USER_SELECTED'
-                ]);
+                Permissions.requestPermissions(['READ_MEDIA_IMAGES', 'READ_MEDIA_VIDEO', 'READ_MEDIA_AUDIO', 'READ_MEDIA_VISUAL_USER_SELECTED']);
             }
         } else {
             // Android 12 and lower
@@ -72,20 +71,17 @@ class StorageSystem {
         }
 
         if (needsPermissions) {
-            Tools.showAlertDialog(
-                "Requires permissions", 
-                "Please allow the necessary permissions to play.\nPress OK & let's see what happens", 
-                {name: "OK", func: null}, 
-                null
-            );
+            Tools.showAlertDialog("Requires permissions", "Please allow the necessary permissions to play.\nPress OK & let's see what happens", {name: "OK", func: null}, null);
         } else {
             trace("All permissions already granted.");
+        }
+        } catch (e:Dynamic) {
+  	      trace('Erro ao pedir permissãos: $e');
         }
         #else
         trace("Permissions request not required or not implemented for this platform.");
         #end
     }
-
 
 	public static function copyAssetsToStorage(sources:Array<String>, targetPath:String = null):Void {
 	    #if mobile
