@@ -74,8 +74,10 @@ class StorageSystem
 			if (!FileSystem.exists(getDirectory())) {
 				FileSystem.createDirectory(getDirectory());
 				Tools.showAlertDialog("Requirements", "Please copy the Assets and Mods folder to " + getDirectory() + " to be able to play.", {name: "OK", func: null}, null);
+				lime.system.System.exit(1);
 			} else if (!FileSystem.exists(getDirectory() + "assets") && !FileSystem.exists(getDirectory() + "mods")) {
 		 	   Tools.showAlertDialog("Requirements", "Please copy the Assets and Mods folder to " + getDirectory() + " to be able to play.", {name: "OK", func: null}, null);
+	        	lime.system.System.exit(1);
 			}
 		}
 		catch (e:Dynamic)
