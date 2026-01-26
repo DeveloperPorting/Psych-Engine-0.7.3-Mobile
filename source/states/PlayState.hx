@@ -1890,7 +1890,7 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	function openChartEditor()
+	public function openChartEditor()
 	{
 		FlxG.camera.followLerp = 0;
 		persistentUpdate = false;
