@@ -19,7 +19,7 @@ import openfl.utils.ByteArray;
 using StringTools;
 
 /** 
- * @Authors StarNova (Cream.BR), FNF BR
+ * @Authors StarNova (Cream.BR), French Fries (FNF BR)
  * @version: 0.1.3
 **/
 class StorageSystem

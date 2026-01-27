@@ -123,6 +123,7 @@
 	<config:android permission="android.permission.READ_MEDIA_IMAGES"/>
 	<config:android permission="android.permission.READ_MEDIA_AUDIO"/>
 	<config:android permission="android.permission.READ_MEDIA_VIDEO"/>
+	<config:android permission="android.permission.READ_MEDIA_DOCUMENTS" />
 	<config:android permission="android.permission.VIBRATE" />
 	<config:android permission="android.permission.INTERNET" />
 	<config:android permission="android.permission.ACCESS_WIFI_STATE"/>

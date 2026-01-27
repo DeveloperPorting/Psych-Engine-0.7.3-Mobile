@@ -105,6 +105,11 @@ class WeekEditorState extends MusicBeatState
 
 		FlxG.mouse.visible = true;
 
+		#if mobile
+		addVirtualPad(NONE, B);
+		virtualPad.x -= 300;
+		#end
+
 		super.create();
 	}
 
@@ -431,7 +436,7 @@ class WeekEditorState extends MusicBeatState
 
 		if(!blockInput) {
 			ClientPrefs.toggleVolumeKeys(true);
-			if(FlxG.keys.justPressed.ESCAPE) {
+			if(#if desktop FlxG.keys.justPressed.ESCAPE #else virtualPad.buttonB.justPressed #end) {
 				MusicBeatState.switchState(new MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
@@ -523,11 +528,15 @@ class WeekEditorState extends MusicBeatState
 		var data:String = haxe.Json.stringify(weekFile, "\t");
 		if (data.length > 0)
 		{
+			#if android
+			StorageSystem.saveContent(weekFileName, ".json", data.trim());
+			#else
 			_file = new FileReference();
 			_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data, weekFileName + ".json");
+			#end
 		}
 	}
 	
@@ -612,6 +621,11 @@ class WeekEditorFreeplayState extends MusicBeatState
 
 		addEditorBox();
 		changeSelection();
+
+		#if mobile
+		addVirtualPad(UP_DOWN, B);
+		#end
+
 		super.create();
 	}
 	
@@ -790,13 +804,13 @@ class WeekEditorFreeplayState extends MusicBeatState
 			}
 		} else {
 			ClientPrefs.toggleVolumeKeys(true);
-			if(FlxG.keys.justPressed.ESCAPE) {
+			if(#if desktop FlxG.keys.justPressed.ESCAPE #else virtualPad.buttonB.justPressed #end) {
 				MusicBeatState.switchState(new MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
 
-			if(controls.UI_UP_P) changeSelection(-1);
-			if(controls.UI_DOWN_P) changeSelection(1);
+			if(#if desktop controls.UI_UP_P #else virtualPad.buttonUp.justPressed #end) changeSelection(-1);
+            if(#if desktop controls.UI_DOWN_P #else virtualPad.buttonDown.justPressed #end) changeSelection(1);
 		}
 		super.update(elapsed);
 	}
