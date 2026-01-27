@@ -323,22 +323,14 @@ class ChartingState extends MusicBeatState
 		UI_box.scrollFactor.set();
 
 		text =
-		"W/S or Mouse Wheel - Change Conductor's strum time
-		\nA/D - Go to the previous/next section
-		\nLeft/Right - Change Snap
+		\nLeft/Right - Go to the previous/next section
 		\nUp/Down - Change Conductor's Strum Time with Snapping" +
-		#if FLX_PITCH
-		"\nLeft Bracket / Right Bracket - Change Song Playback Rate (SHIFT to go Faster)
-		\nALT + Left Bracket / Right Bracket - Reset Song Playback Rate" +
-		#end
-		"\nHold Shift to move 4x faster
-		\nHold Control and click on an arrow to select it
-		\nZ/X - Zoom in/out
+		"\nHold Y to move 4x faster
+		\nZ/D - Zoom in/out
 		\n
-		\nEsc - Test your chart inside Chart Editor
-		\nEnter - Play your chart
-		\nQ/E - Decrease/Increase Note Sustain Length
-		\nSpace - Stop/Resume song";
+		\nC - Test your chart inside Chart Editor
+		\nA - Play your chart
+		\nX - Stop/Resume song";
 
 		var tipTextArray:Array<String> = text.split('\n');
 		for (i in 0...tipTextArray.length) {
@@ -1995,7 +1987,7 @@ class ChartingState extends MusicBeatState
 
 			var style = currentType;
 
-			if (virtualPad.buttonY.pressed || FlxG.keys.pressed.SHIFT){
+			if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed){
 				style = 3;
 			}
 
@@ -2087,7 +2079,7 @@ class ChartingState extends MusicBeatState
 				}
 			}
 			var shiftThing:Int = 1;
-			if (virtualPad.buttonY.pressed || FlxG.keys.pressed.SHIFT)
+			if (FlxG.keys.pressed.SHIFT || virtualPad.buttonY.pressed)
 				shiftThing = 4;
 
 			if (FlxG.keys.justPressed.D || virtualPad.buttonRight.justPressed)
