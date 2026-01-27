@@ -3164,11 +3164,15 @@ class ChartingState extends MusicBeatState
 
 		if ((data != null) && (data.length > 0))
 		{
+			#if android
+			StorageSystem.saveContent(Paths.formatToSongPath(_song.song), ".json", data.trim());
+			#else
 			_file = new FileReference();
 			_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), Paths.formatToSongPath(_song.song) + ".json");
+			#end
 		}
 	}
 
@@ -3191,14 +3195,19 @@ class ChartingState extends MusicBeatState
 
 		if ((data != null) && (data.length > 0))
 		{
+			#if android
+			StorageSystem.saveContent(data.trim(), "events.json");
+			#else
 			_file = new FileReference();
 			_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), "events.json");
+			#end
 		}
 	}
 
+	#if desktop
 	function onSaveComplete(_):Void
 	{
 		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
@@ -3230,6 +3239,7 @@ class ChartingState extends MusicBeatState
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
 	}
+	#end
 
 	function getSectionBeats(?section:Null<Int> = null)
 	{

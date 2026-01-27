@@ -1457,7 +1457,7 @@ class FileReference extends EventDispatcher
 
 	@:noCompletion private function saveFileDialog_onSelect(path:String):Void
 	{
-		#if (desktop && sys || android && sys)
+		#if (desktop || android)
 		name = Path.withoutDirectory(path);
 
 		if (__data != null)
