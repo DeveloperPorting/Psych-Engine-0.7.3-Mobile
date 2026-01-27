@@ -74,7 +74,7 @@ class MobileVirtualPad extends FlxMobileInputManager
                 buttonUp = add(createButton(105, FlxG.height - 243, 'up', 0x00FF00, [UP, noteUP]));
                 buttonLeft = add(createButton(0, FlxG.height - 135, 'left', 0xFF00FF, [LEFT, noteLEFT]));
                 buttonRight = add(createButton(207, FlxG.height - 135, 'right', 0xFF0000, [RIGHT, noteRIGHT]));
-            case LEFT_FULL || FULL:
+            case LEFT_FULL:
                 buttonUp = add(createButton(105, FlxG.height - 345, 'up', 0x00FF00, [UP, noteUP]));
                 buttonLeft = add(createButton(0, FlxG.height - 243, 'left', 0xFF00FF, [LEFT, noteLEFT]));
                 buttonRight = add(createButton(207, FlxG.height - 243, 'right', 0xFF0000, [RIGHT, noteRIGHT]));
