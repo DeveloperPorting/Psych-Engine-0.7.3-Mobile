@@ -81,6 +81,8 @@ class EditorPlayState extends MusicBeatSubstate
 		/* setting up some important data */
 		this.playbackRate = playbackRate;
 		this.startPos = Conductor.songPosition;
+		
+		controls.isInSubstate = true;
 
 		Conductor.safeZoneOffset = (ClientPrefs.data.safeFrames / 60) * 1000 * playbackRate;
 		Conductor.songPosition -= startOffset;
@@ -165,6 +167,11 @@ class EditorPlayState extends MusicBeatSubstate
 			super.update(elapsed);
 			return;
 		}
+		
+		#if mobile
+		if (!controls.isInSubstate)
+            controls.isInSubstate = true;
+        #end
 		
 		if (startingSong)
 		{

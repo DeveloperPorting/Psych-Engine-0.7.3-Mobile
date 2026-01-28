@@ -1689,6 +1689,11 @@ class ChartingState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		curStep = recalculateSteps();
+		
+		#if mobile
+		if (controls.isInSubstate)
+            controls.isInSubstate = false;
+        #end
 
 		if(FlxG.sound.music.time < 0) {
 			FlxG.sound.music.pause();
