@@ -69,22 +69,31 @@ class MainMenuState extends MusicBeatState
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
+		// ИЗМЕНЕНО: Позиционирование кнопок СЛЕВА
 		for (i in 0...optionShit.length)
 		{
-			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
-			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
+			// Изменен расчет позиции: теперь кнопки слева с отступом 50px от левого края
+			var menuItem:FlxSprite = new FlxSprite(50, 100 + (i * 110)); // X = 50 (слева), Y с отступом
 			menuItem.antialiasing = ClientPrefs.data.antialiasing;
 			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
+			
+			// ИЗМЕНЕНО: Убираем автоматическое центрирование по X
+			// menuItem.screenCenter(X); - закомментировано
+			
+			// Масштабируем кнопки если нужно (можно подогнать размер)
+			menuItem.scale.set(0.8, 0.8); // Добавьте эту строку если кнопки слишком большие
+			menuItem.updateHitbox();
+			
 			menuItems.add(menuItem);
+			
+			// Оставляем scroll factor как есть
 			var scr:Float = (optionShit.length - 4) * 0.135;
 			if (optionShit.length < 6)
 				scr = 0;
 			menuItem.scrollFactor.set(0, scr);
-			menuItem.updateHitbox();
-			menuItem.screenCenter(X);
 		}
 
 		var psychVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
@@ -95,6 +104,7 @@ class MainMenuState extends MusicBeatState
 		fnfVer.scrollFactor.set();
 		fnfVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(fnfVer);
+		
 		changeItem();
 
 		#if ACHIEVEMENTS_ALLOWED
@@ -204,7 +214,7 @@ class MainMenuState extends MusicBeatState
 					}
 				}
 			}
-			if (controls.justPressed('debug_1') || virtualPad.buttonC.justPressed)
+			if (controls.justPressed('debug_1') || (virtualPad != null && virtualPad.buttonC.justPressed))
 			{
 				selectedSomethin = true;
 				MusicBeatState.switchState(new MasterEditorMenu());
@@ -217,9 +227,13 @@ class MainMenuState extends MusicBeatState
 	function changeItem(huh:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'));
-		menuItems.members[curSelected].animation.play('idle');
-		menuItems.members[curSelected].updateHitbox();
-		menuItems.members[curSelected].screenCenter(X);
+		
+		// Сбрасываем анимацию предыдущей кнопки
+		if (menuItems.members[curSelected] != null)
+		{
+			menuItems.members[curSelected].animation.play('idle');
+			menuItems.members[curSelected].updateHitbox();
+		}
 
 		curSelected += huh;
 
@@ -228,11 +242,15 @@ class MainMenuState extends MusicBeatState
 		if (curSelected < 0)
 			curSelected = menuItems.length - 1;
 
+		// Анимируем выбранную кнопку
 		menuItems.members[curSelected].animation.play('selected');
 		menuItems.members[curSelected].centerOffsets();
-		menuItems.members[curSelected].screenCenter(X);
 
-		camFollow.setPosition(menuItems.members[curSelected].getGraphicMidpoint().x,
-			menuItems.members[curSelected].getGraphicMidpoint().y - (menuItems.length > 4 ? menuItems.length * 8 : 0));
+		// ИЗМЕНЕНО: Обновляем позицию камеры для следования за выбранной кнопкой
+		// Теперь камера следует за кнопками, но они слева, так что корректируем
+		camFollow.setPosition(
+			menuItems.members[curSelected].getGraphicMidpoint().x - 100, // Смещаем камеру левее
+			menuItems.members[curSelected].getGraphicMidpoint().y - (menuItems.length > 4 ? menuItems.length * 8 : 0)
+		);
 	}
 }
