@@ -8,6 +8,11 @@ import haxe.io.Bytes;
 import openfl.utils.ByteArray;
 import openfl.utils.Assets;
 
+import androidmanager.os.Environment;
+import androidmanager.tools.PermissionUtils;
+import androidmanager.os.Build.VERSION;
+import androidmanager.os.Build.VERSION_CODES;
+
 #if sys
 import sys.FileSystem;
 import sys.io.File;
