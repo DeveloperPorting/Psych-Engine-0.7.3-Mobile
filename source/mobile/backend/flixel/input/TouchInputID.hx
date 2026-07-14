@@ -8,8 +8,8 @@ import flixel.system.macros.FlxMacroUtil;
  */
 @:runtimeValue
 enum abstract TouchInputID(Int) from Int to Int {
-	public static var fromStringMap(default, null):Map<String, FlxMobileInputID> = FlxMacroUtil.buildMap("mobile.backend.flixel.input.TouchInputID");
-	public static var toStringMap(default, null):Map<FlxMobileInputID, String> = FlxMacroUtil.buildMap("mobile.backend.flixel.input.TouchInputID", true);
+	public static var fromStringMap(default, null):Map<String, TouchInputID> = FlxMacroUtil.buildMap("mobile.backend.flixel.input.TouchInputID");
+	public static var toStringMap(default, null):Map<TouchInputID, String> = FlxMacroUtil.buildMap("mobile.backend.flixel.input.TouchInputID", true);
 	
 	var ANY = -2;
 	var NONE = -1;
