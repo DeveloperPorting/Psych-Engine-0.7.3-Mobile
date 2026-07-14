@@ -1,20 +1,20 @@
 package mobile.backend.flixel.input;
 
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import mobile.backend.flixel.input.FlxMobileInputID;
-import mobile.backend.flixel.FlxButton;
+import mobile.backend.flixel.input.TouchInputID;
+import mobile.backend.flixel.TouchButton;
 import haxe.ds.Map;
 
 /**
  * Virtual button manager for mobile devices
  * @Authors: StarNova (Cream.BR)
  */
-class TouchInputManager extends FlxTypedSpriteGroup<FlxButton>
+class TouchInputManager extends FlxTypedSpriteGroup<TouchButton>
 {
 	/**
 	 * A dictionary that maps unique IDs to the actual instances of the buttons
 	 */
-	public var activeButtons:Map<FlxMobileInputID, FlxButton> = new Map<FlxMobileInputID, FlxButton>();
+	public var activeButtons:Map<TouchInputID, TouchButton> = new Map<TouchInputID, TouchButton>();
 
 	public function new()
 	{
@@ -22,32 +22,32 @@ class TouchInputManager extends FlxTypedSpriteGroup<FlxButton>
 		refreshMappedButtons();
 	}
 
-	public inline function isPressed(id:FlxMobileInputID):Bool
+	public inline function isPressed(id:TouchInputID):Bool
 	{
 		return checkButtonState(id, PRESSED);
 	}
 
-	public inline function isJustPressed(id:FlxMobileInputID):Bool
+	public inline function isJustPressed(id:TouchInputID):Bool
 	{
 		return checkButtonState(id, JUST_PRESSED);
 	}
 
-	public inline function isJustReleased(id:FlxMobileInputID):Bool
+	public inline function isJustReleased(id:TouchInputID):Bool
 	{
 		return checkButtonState(id, JUST_RELEASED);
 	}
 
-	public inline function isAnyPressed(ids:Array<FlxMobileInputID>):Bool
+	public inline function isAnyPressed(ids:Array<TouchInputID>):Bool
 	{
 		return checkArrayState(ids, PRESSED);
 	}
 
-	public inline function isAnyJustPressed(ids:Array<FlxMobileInputID>):Bool
+	public inline function isAnyJustPressed(ids:Array<TouchInputID>):Bool
 	{
 		return checkArrayState(ids, JUST_PRESSED);
 	}
 
-	public inline function isAnyJustReleased(ids:Array<FlxMobileInputID>):Bool
+	public inline function isAnyJustReleased(ids:Array<TouchInputID>):Bool
 	{
 		return checkArrayState(ids, JUST_RELEASED);
 	}
@@ -56,18 +56,18 @@ class TouchInputManager extends FlxTypedSpriteGroup<FlxButton>
 	/**
 	 * Checks the status of a specific button, or handles special cases such as ANY and NONE
 	 */
-	public function checkButtonState(id:FlxMobileInputID, state:InputState = JUST_PRESSED):Bool
+	public function checkButtonState(id:TouchInputID, state:InputState = JUST_PRESSED):Bool
 	{
 		switch (id)
 		{
-			case FlxMobileInputID.ANY:
+			case TouchInputID.ANY:
 				for (btn in activeButtons)
 				{
 					if (getRawState(btn, state)) return true;
 				}
 				return false;
 
-			case FlxMobileInputID.NONE:
+			case TouchInputID.NONE:
 				return false;
 
 			default:
@@ -80,7 +80,7 @@ class TouchInputManager extends FlxTypedSpriteGroup<FlxButton>
 		return false;
 	}
 
-	function checkArrayState(ids:Array<FlxMobileInputID>, state:InputState = JUST_PRESSED):Bool
+	function checkArrayState(ids:Array<TouchInputID>, state:InputState = JUST_PRESSED):Bool
 	{
 		if (ids == null || ids.length == 0) return false;
 
@@ -95,7 +95,7 @@ class TouchInputManager extends FlxTypedSpriteGroup<FlxButton>
 	/**
 	 * Returns the button's boolean property based on the desired state
 	 */
-	inline function getRawState(btn:FlxButton, state:InputState):Bool
+	inline function getRawState(btn:TouchButton, state:InputState):Bool
 	{
 		return switch (state)
 		{
@@ -112,7 +112,7 @@ class TouchInputManager extends FlxTypedSpriteGroup<FlxButton>
 	{
 		activeButtons.clear();
 		
-		forEachExists(function(btn:FlxButton)
+		forEachExists(function(btn:TouchButton)
 		{
 			if (btn.IDs != null)
 			{

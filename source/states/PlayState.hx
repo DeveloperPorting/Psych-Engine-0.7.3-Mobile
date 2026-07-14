@@ -573,6 +573,7 @@ class PlayState extends MusicBeatState
 
 		startingSong = true;
 		
+		#if mobile
 		var pauseButton = new mobile.backend.PauseButton(0, 0, function()
 		{
 			var ret:Dynamic = callOnScripts('onPause', null, true);
@@ -583,7 +584,6 @@ class PlayState extends MusicBeatState
 		add(pauseButton);
 		pauseButton.cameras = [camOther];
 		
-		#if mobile
 		addMobileControls(false);
 	    hitbox.visible = false;
 		#end

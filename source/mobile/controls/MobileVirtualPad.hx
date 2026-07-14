@@ -6,14 +6,14 @@ import flixel.graphics.frames.FlxTileFrames;
 import flixel.math.FlxPoint;
 import flixel.util.FlxDestroyUtil;
 
-import mobile.backend.flixel.FlxButton;
+import mobile.backend.flixel.TouchButton;
 
 import openfl.utils.Assets;
 import openfl.display.BitmapData;
 
 import mobile.backend.MobileUtil;
 import mobile.backend.flixel.input.TouchInputManager;
-import mobile.backend.flixel.input.FlxMobileInputID;
+import mobile.backend.flixel.input.TouchInputID;
 
 #if MODS_ALLOWED
 import sys.FileSystem;
@@ -52,28 +52,28 @@ enum MobileActionMode
  */
 class MobileVirtualPad extends TouchInputManager
 {
-	public var buttons:Array<FlxButton> = [];
+	public var buttons:Array<TouchButton> = [];
 	
-	public var buttonLeft:FlxButton;
-	public var buttonUp:FlxButton;
-	public var buttonRight:FlxButton;
-	public var buttonDown:FlxButton;
-	public var buttonLeft2:FlxButton;
-	public var buttonUp2:FlxButton;
-	public var buttonRight2:FlxButton;
-	public var buttonDown2:FlxButton;
+	public var buttonLeft:TouchButton;
+	public var buttonUp:TouchButton;
+	public var buttonRight:TouchButton;
+	public var buttonDown:TouchButton;
+	public var buttonLeft2:TouchButton;
+	public var buttonUp2:TouchButton;
+	public var buttonRight2:TouchButton;
+	public var buttonDown2:TouchButton;
 	
-	public var buttonA:FlxButton;
-	public var buttonB:FlxButton;
-	public var buttonC:FlxButton;
-	public var buttonD:FlxButton;
-	public var buttonE:FlxButton;
-	public var buttonR:FlxButton;
-	public var buttonV:FlxButton;
-	public var buttonX:FlxButton;
-	public var buttonY:FlxButton;
-	public var buttonZ:FlxButton;
-	public var buttonS:FlxButton;
+	public var buttonA:TouchButton;
+	public var buttonB:TouchButton;
+	public var buttonC:TouchButton;
+	public var buttonD:TouchButton;
+	public var buttonE:TouchButton;
+	public var buttonR:TouchButton;
+	public var buttonV:TouchButton;
+	public var buttonX:TouchButton;
+	public var buttonY:TouchButton;
+	public var buttonZ:TouchButton;
+	public var buttonS:TouchButton;
 	
 	public function new(DPad:MobileDPadMode, Action:MobileActionMode)
 	{
@@ -87,30 +87,30 @@ class MobileVirtualPad extends TouchInputManager
 		switch (DPad)
 		{
 			case UP_DOWN:
-				buttonUp = add(createButton(0, FlxG.height - 255, 'up', 0x00FF00, [UP, noteUP]));
-				buttonDown = add(createButton(0, FlxG.height - 135, 'down', 0x00FFFF, [DOWN, noteDOWN]));
+				buttonUp = add(createButton(0, FlxG.height - 255, 'up', 0x00FF00, [UP]));
+				buttonDown = add(createButton(0, FlxG.height - 135, 'down', 0x00FFFF, [DOWN]));
 			case LEFT_RIGHT:
-				buttonLeft = add(createButton(0, FlxG.height - 135, 'left', 0xFF00FF, [LEFT, noteLEFT]));
-				buttonRight = add(createButton(127, FlxG.height - 135, 'right', 0xFF0000, [RIGHT, noteRIGHT]));
+				buttonLeft = add(createButton(0, FlxG.height - 135, 'left', 0xFF00FF, [LEFT]));
+				buttonRight = add(createButton(127, FlxG.height - 135, 'right', 0xFF0000, [RIGHT]));
 			case UP_LEFT_RIGHT:
-				buttonUp = add(createButton(105, FlxG.height - 243, 'up', 0x00FF00, [UP, noteUP]));
-				buttonLeft = add(createButton(0, FlxG.height - 135, 'left', 0xFF00FF, [LEFT, noteLEFT]));
-				buttonRight = add(createButton(207, FlxG.height - 135, 'right', 0xFF0000, [RIGHT, noteRIGHT]));
+				buttonUp = add(createButton(105, FlxG.height - 243, 'up', 0x00FF00, [UP]));
+				buttonLeft = add(createButton(0, FlxG.height - 135, 'left', 0xFF00FF, [LEFT]));
+				buttonRight = add(createButton(207, FlxG.height - 135, 'right', 0xFF0000, [RIGHT]));
 			case LEFT_FULL:
-				buttonUp = add(createButton(105, FlxG.height - 345, 'up', 0x00FF00, [UP, noteUP]));
-				buttonLeft = add(createButton(0, FlxG.height - 243, 'left', 0xFF00FF, [LEFT, noteLEFT]));
-				buttonRight = add(createButton(207, FlxG.height - 243, 'right', 0xFF0000, [RIGHT, noteRIGHT]));
-				buttonDown = add(createButton(105, FlxG.height - 135, 'down', 0x00FFFF, [DOWN, noteDOWN]));
+				buttonUp = add(createButton(105, FlxG.height - 345, 'up', 0x00FF00, [UP]));
+				buttonLeft = add(createButton(0, FlxG.height - 243, 'left', 0xFF00FF, [LEFT]));
+				buttonRight = add(createButton(207, FlxG.height - 243, 'right', 0xFF0000, [RIGHT]));
+				buttonDown = add(createButton(105, FlxG.height - 135, 'down', 0x00FFFF, [DOWN]));
 			case CHART_EDITOR:
-                buttonUp = add(createButton(305, FlxG.height - 345, 'up', 0x00FF00, [UP, noteUP]));
-				buttonLeft = add(createButton(200, FlxG.height - 243, 'left', 0xFF00FF, [LEFT, noteLEFT]));
-				buttonRight = add(createButton(407, FlxG.height - 243, 'right', 0xFF0000, [RIGHT, noteRIGHT]));		
-				buttonDown = add(createButton(305, FlxG.height - 135, 'down', 0x00FFFF, [DOWN, noteDOWN]));
+                buttonUp = add(createButton(305, FlxG.height - 345, 'up', 0x00FF00, [UP]));
+				buttonLeft = add(createButton(200, FlxG.height - 243, 'left', 0xFF00FF, [LEFT]));
+				buttonRight = add(createButton(407, FlxG.height - 243, 'right', 0xFF0000, [RIGHT]));		
+				buttonDown = add(createButton(305, FlxG.height - 135, 'down', 0x00FFFF, [DOWN]));
 			case NONE:
 				// lmao
 			default:
-				buttonUp = add(createButton(0, FlxG.height - 255, 'up', 0x00FF00, [UP, noteUP]));
-				buttonDown = add(createButton(0, FlxG.height - 135, 'down', 0x00FFFF, [DOWN, noteDOWN]));
+				buttonUp = add(createButton(0, FlxG.height - 255, 'up', 0x00FF00, [UP]));
+				buttonDown = add(createButton(0, FlxG.height - 135, 'down', 0x00FFFF, [DOWN]));
 		}
 		switch (Action)
 		{
@@ -156,10 +156,10 @@ class MobileVirtualPad extends TouchInputManager
 				buttonZ = add(createButton(screenW - 132, screenH - 255, 'z', 0xCCB98E, [Z]));
 				buttonA = add(createButton(screenW - 132, screenH - 135, 'a', 0xFF0000, [A]));
 			case NOTE_SPLASH_DEBUG:
-				buttonUp2 = add(createButton(screenW - 105, screenH - 345, 'up', 0x00FF00, [UP, noteUP]));
-				buttonLeft2 = add(createButton(screenW - 207, screenH - 243, 'left', 0xFF00FF, [LEFT, noteLEFT]));
-				buttonRight2 = add(createButton(screenW, screenH - 243, 'right', 0xFF0000, [RIGHT, noteRIGHT]));
-				buttonDown2 = add(createButton(screenW - 105, screenH - 135, 'down', 0x00FFFF, [DOWN, noteDOWN]));
+				buttonUp2 = add(createButton(screenW - 105, screenH - 345, 'up', 0x00FF00, [UP2]));
+				buttonLeft2 = add(createButton(screenW - 207, screenH - 243, 'left', 0xFF00FF, [LEFT2]));
+				buttonRight2 = add(createButton(screenW, screenH - 243, 'right', 0xFF0000, [RIGHT2]));
+				buttonDown2 = add(createButton(screenW - 105, screenH - 135, 'down', 0x00FFFF, [DOWN2]));
 				buttonV = add(createButton(screenW - 510, screenH - 255, 'v', 0x49A9B2, [V]));
 				buttonD = add(createButton(screenW - 510, screenH - 135, 'd', 0x0078FF, [D]));
 				buttonX = add(createButton(screenW - 384, screenH - 255, 'x', 0x99062D, [X]));
@@ -179,7 +179,7 @@ class MobileVirtualPad extends TouchInputManager
 		refreshMappedButtons();
 	}
 	
-	private function createButton(X:Float, Y:Float, Graphic:String, Color:Int, IDs:Array<FlxMobileInputID>):FlxButton
+	private function createButton(X:Float, Y:Float, Graphic:String, Color:Int, IDs:Array<TouchInputID>):TouchButton
 	{
 		var graphic:FlxGraphic = null;
 		var path:String = 'assets/mobile/virtualpad/${Graphic}.png';
@@ -207,7 +207,7 @@ class MobileVirtualPad extends TouchInputManager
 			if (graphic == null) graphic = FlxGraphic.fromBitmapData(Assets.getBitmapData(path), false, cacheKey);
 		}
 		
-		var button = new FlxButton(X, Y, IDs);
+		var button = new TouchButton(X, Y, IDs);
 		
 		button.frames = FlxTileFrames.fromGraphic(graphic, FlxPoint.weak(Std.int(graphic.width / 3), graphic.height));
 		

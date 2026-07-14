@@ -5,9 +5,9 @@ import flixel.util.FlxDestroyUtil;
 import openfl.display.BitmapData;
 import openfl.display.Shape;
 import mobile.backend.MobileUtil;
-import mobile.backend.flixel.FlxButton;
+import mobile.backend.flixel.TouchButton;
 import mobile.backend.flixel.input.TouchInputManager;
-import mobile.backend.flixel.input.FlxMobileInputID;
+import mobile.backend.flixel.input.TouchInputID;
 
 /**
  * Hitbox... HIT
@@ -16,12 +16,12 @@ import mobile.backend.flixel.input.FlxMobileInputID;
  
 class MobileHitbox extends TouchInputManager
 {
-	public var buttons:Array<FlxButton> = [];
+	public var buttons:Array<TouchButton> = [];
 	
-	public var buttonLeft:FlxButton;
-	public var buttonDown:FlxButton;
-	public var buttonUp:FlxButton;
-	public var buttonRight:FlxButton;
+	public var buttonLeft:TouchButton;
+	public var buttonDown:TouchButton;
+	public var buttonUp:TouchButton;
+	public var buttonRight:TouchButton;
 
 	private final alphaTarget:Float = 0.2;
 	
@@ -33,10 +33,10 @@ class MobileHitbox extends TouchInputManager
 
 		var buttonWidth:Int = Std.int(FlxG.width / 4);
 		var data = [
-			{color: 0xFF00FF, ids: [FlxMobileInputID.hitboxLEFT, FlxMobileInputID.noteLEFT]},
-			{color: 0x00FFFF, ids: [FlxMobileInputID.hitboxDOWN, FlxMobileInputID.noteDOWN]},
-			{color: 0x00FF00, ids: [FlxMobileInputID.hitboxUP, FlxMobileInputID.noteUP]},
-			{color: 0xFF0000, ids: [FlxMobileInputID.hitboxRIGHT, FlxMobileInputID.noteRIGHT]}
+			{color: 0xFF00FF, ids: [TouchInputID.NOTE_LEFT]},
+			{color: 0x00FFFF, ids: [TouchInputID.NOTE_DOWN]},
+			{color: 0x00FF00, ids: [TouchInputID.NOTE_UP]},
+			{color: 0xFF0000, ids: [TouchInputID.NOTE_RIGHT]}
 		];
 		
 		for (i in 0...data.length) {
@@ -54,9 +54,9 @@ class MobileHitbox extends TouchInputManager
 		refreshMappedButtons();
 	}
 
-	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:FlxColor, IDs:Array<FlxMobileInputID>):FlxButton
+	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:FlxColor, IDs:Array<TouchInputID>):TouchButton
 	{
-		var hint:FlxButton = new FlxButton(X, Y, IDs);
+		var hint:TouchButton = new TouchButton(X, Y, IDs);
 		
 		var graphicKey:Int = Color + Width;
 		var bgGraphic:flixel.graphics.FlxGraphic = _cachedGraphics.get(graphicKey);
