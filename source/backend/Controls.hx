@@ -7,6 +7,12 @@ import flixel.input.keyboard.FlxKey;
 #if mobile
 import mobile.backend.flixel.input.TouchInputID;
 import mobile.backend.MobileUtil;
+
+private enum abstract InputMode(Int) {
+	var PRESSED = 0;
+	var JUST_PRESSED = 1;
+	var JUST_RELEASED = 2;
+}
 #end
 
 class Controls
@@ -163,12 +169,6 @@ class Controls
 	
 	#if mobile
 	public var isInSubstate:Bool = false;
-
-	private enum abstract InputMode(Int) {
-		var PRESSED = 0;
-		var JUST_PRESSED = 1;
-		var JUST_RELEASED = 2;
-	}
 
 	private var activeState(get, never):Dynamic;
 	@:noCompletion private inline function get_activeState():Dynamic {
