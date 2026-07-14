@@ -2,22 +2,22 @@ package mobile.backend;
 
 import flixel.FlxG;
 import flixel.FlxBasic;
-import mobile.backend.flixel.input.FlxMobileInputID;
-import mobile.backend.flixel.FlxButton;
+import mobile.backend.flixel.input.TouchInputID;
+import mobile.backend.flixel.TouchButton;
 
 class MobileUtil {
 	public static var isTouchActive(default, null):Bool = true;
     
-	public static var mobileIDs:Map<String, Array<FlxMobileInputID>> = [
-		'note_up'		=> [noteUP, UP2],
-		'note_left'		=> [noteLEFT, LEFT2],
-		'note_down'		=> [noteDOWN, DOWN2],
-		'note_right'	=> [noteRIGHT, RIGHT2],
+	public static var mobileIDs:Map<String, Array<TouchInputID>> = [
+		'note_up'		=> [NOTE_UP],
+		'note_left'		=> [NOTE_LEFT],
+		'note_down'		=> [NOTE_DOWN],
+		'note_right'	=> [NOTE_RIGHT],
 
-		'ui_up'			=> [UP, noteUP],
-		'ui_left'		=> [LEFT, noteLEFT],
-		'ui_down'		=> [DOWN, noteDOWN],
-		'ui_right'		=> [RIGHT, noteRIGHT],
+		'ui_up'			=> [UP],
+		'ui_left'		=> [LEFT],
+		'ui_down'		=> [DOWN],
+		'ui_right'		=> [RIGHT],
 
 		'accept'		=> [A],
 		'back'			=> [B],
@@ -61,7 +61,7 @@ class MobileUtil {
 	 * @param container The main class that contains the buttons (e.g., this)
 	 * @param buttons The array of buttons
 	 */
-	public static function setControlsState(container:FlxBasic, buttons:Array<FlxButton>):Void 
+	public static function setControlsState(container:FlxBasic, buttons:Array<TouchButton>):Void 
 	{
 		if (container.visible != isTouchActive) 
 		{
