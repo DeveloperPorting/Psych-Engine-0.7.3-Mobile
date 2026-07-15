@@ -8,11 +8,13 @@ import haxe.io.Bytes;
 import openfl.utils.ByteArray;
 import openfl.utils.Assets;
 
+#if android
 import androidmanager.os.Environment;
 import androidmanager.tools.PermissionUtils;
 import androidmanager.os.Build.VERSION;
 import androidmanager.os.Build.VERSION_CODES;
 import androidmanager.content.Interface;
+#end
 
 #if sys
 import sys.FileSystem;
@@ -48,7 +50,7 @@ class StorageSystem
 		#if android
 		return Environment.getExternalStorageDirectory() + '/.' + folderName + '/';
 		#elseif ios
-		return lime.system.System.documentsDirectory;
+		return lime.system.System.documentsDirectory + '/';
 		#else
 		return Sys.getCwd();
 		#end
@@ -62,7 +64,7 @@ class StorageSystem
 		#if android
 		return Environment.getExternalStorageDirectory() + '/Android/media/' + packageName + '/';
 		#elseif ios
-		return lime.system.System.documentsDirectory;
+		return lime.system.System.documentsDirectory + '/';
 		#else
 		return Sys.getCwd();
 		#end

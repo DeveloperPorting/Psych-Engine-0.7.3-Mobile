@@ -1,7 +1,9 @@
 package mobile.backend.utils;
 
 import lime.app.Application;
+#if android
 import androidmanager.content.Interface;
+#end
 
 /**
  * @Author LumiCoder
