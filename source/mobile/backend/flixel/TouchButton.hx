@@ -11,7 +11,11 @@ import flixel.input.FlxPointer;
 import flixel.input.IFlxInput;
 import flixel.input.touch.FlxTouch;
 import flixel.math.FlxPoint;
+#if (flixel > "5.3.0")
 import flixel.sound.FlxSound;
+#else
+import flixel.system.FlxSound;
+#end
 import flixel.text.FlxText;
 import flixel.util.FlxDestroyUtil;
 import mobile.backend.flixel.input.TouchInputID;
@@ -134,7 +138,7 @@ class FlxTypedTouch<T:FlxSprite> extends FlxSprite implements IFlxInput
 
 	function setupAnimation(animationName:String, frameIndex:Int):Void
 	{
-		frameIndex = Std.int(Math.min(frameIndex, animation.numFrames - 1));
+		frameIndex = Std.int(Math.min(frameIndex, #if (flixel > "3.3.12") animation.numFrames #else animation.frames #end - 1));
 		animation.add(animationName, [frameIndex]);
 	}
 

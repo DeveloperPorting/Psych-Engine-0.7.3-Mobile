@@ -162,7 +162,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			bgFade.alpha += 0.5 * elapsed;
 			if(bgFade.alpha > 0.5) bgFade.alpha = 0.5;
 
-			if(Controls.instance.ACCEPT) {
+			if(Controls.instance.ACCEPT #if mobile || TouchUtil.justPressed #end) {
 				if(!daText.finishedText) {
 					daText.finishText();
 					if(skipDialogueThing != null) {
