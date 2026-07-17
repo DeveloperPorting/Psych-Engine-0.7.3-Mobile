@@ -574,6 +574,19 @@ class PlayState extends MusicBeatState
 		startingSong = true;
 		
 		#if mobile
+		#if !ios
+		if(!ClientPrefs.data.invisibleButtonPause) {
+			var pauseButton = new mobile.backend.PauseButton(0, 0, function()
+			{
+				var ret:Dynamic = callOnScripts('onPause', null, true);
+				if(ret != LuaUtils.Function_Stop) {
+					openPauseMenu();
+				}
+			});
+			add(pauseButton);
+			pauseButton.cameras = [camOther];
+		}
+		#else
 		var pauseButton = new mobile.backend.PauseButton(0, 0, function()
 		{
 			var ret:Dynamic = callOnScripts('onPause', null, true);
@@ -583,6 +596,7 @@ class PlayState extends MusicBeatState
 		});
 		add(pauseButton);
 		pauseButton.cameras = [camOther];
+		#end
 		
 		addMobileControls(false);
 	    hitbox.visible = false;

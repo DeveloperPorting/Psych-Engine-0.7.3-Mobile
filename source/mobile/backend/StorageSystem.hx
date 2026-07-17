@@ -24,7 +24,7 @@ import sys.io.File;
 using StringTools;
 
 /** * @Authors StarNova (Cream.BR), LumiCoder (FNF BR)
- * @version 0.1.8
+ * @version 0.1.9
  */
 class StorageSystem
 {
@@ -48,9 +48,12 @@ class StorageSystem
 	public static function getDirectory():String
 	{
 		#if android
-		return Environment.getExternalStorageDirectory() + '/.' + folderName + '/';
+		if (VERSION.SDK_INT >= VERSION_CODES.R)
+			return Environment.getExternalStorageDirectory() + '/.' + folderName + '/';
+		else
+			return '/storage/emulated/0/.' + folderName + '/';
 		#elseif ios
-		return lime.system.System.documentsDirectory + '/';
+		return haxe.io.Path.addTrailingSlash(lime.system.System.documentsDirectory);
 		#else
 		return Sys.getCwd();
 		#end
@@ -62,9 +65,12 @@ class StorageSystem
 	public static function getAssetsDirectory():String
 	{
 		#if android
-		return Environment.getExternalStorageDirectory() + '/Android/media/' + packageName + '/';
+		if (VERSION.SDK_INT >= VERSION_CODES.R)
+			return Environment.getExternalStorageDirectory() + '/Android/media/' + packageName + '/';
+		else
+			return '/storage/emulated/0/Android/media/' + packageName + '/';
 		#elseif ios
-		return lime.system.System.documentsDirectory + '/';
+		return haxe.io.Path.addTrailingSlash(lime.system.System.documentsDirectory);
 		#else
 		return Sys.getCwd();
 		#end
@@ -99,15 +105,19 @@ class StorageSystem
 				return true;
 			}
 		}
+		#end
 		
+		#if mobile
 		try
 		{
 			var paths = [getAssetsDirectory(), getDirectory()];
 			if (!FileSystem.exists(paths[0])) FileSystem.createDirectory(paths[0]);
 			if (!FileSystem.exists(paths[1])) FileSystem.createDirectory(paths[1]);
 			
+			#if android
 			// Creating .nomedia files to avoid images remaining in the gallery
-			if (!FileSystem.exists(paths[0] + ".nomedia")) File.saveContent(paths[0] + ".nomedia", "/storage/emulated/0/Android/media/" + packageName);
+			if (!FileSystem.exists(paths[0] + ".nomedia")) File.saveContent(paths[0] + ".nomedia", paths[0]);
+			#end
 			
 			if (!FileSystem.exists(paths[0] + "assets") || !FileSystem.exists(paths[1] + "mods"))
 			{
@@ -134,7 +144,7 @@ class StorageSystem
 		}
 		#end
 		
-		return false; // If not Android, or no interruption needed, proceed.
+		return false; // If not Mobile, or no interruption needed, proceed.
 	}
 	
 	/**
@@ -142,8 +152,8 @@ class StorageSystem
 	 */
 	private static function startApkCopy():Void
 	{
-		#if android
-		PopUp.showAlert("Extracting Files", "Extracting assets from APK. Please wait.", "OK");
+		#if mobile
+		PopUp.showAlert("Extracting Files", "Extracting assets from application. Please wait.", "OK");
 		
 		try
 		{
