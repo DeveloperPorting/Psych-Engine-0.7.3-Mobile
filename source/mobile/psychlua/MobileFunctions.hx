@@ -173,10 +173,12 @@ class MobileFunctions
 			if (target != null) target.removeVirtualPad();
 		});
 
-		Lua_helper.add_callback(lua, "addMobileControls", function(?defaultDrawTarget:Bool = false) 
+		Lua_helper.add_callback(lua, "addMobileControls", function(?defaultDrawTarget:Bool = false, ?extraButtons:Int = 0) 
 		{
 			var target = getTargetState();
-			if (target != null) target.addMobileControls(defaultDrawTarget);
+			if (target != null && Reflect.hasField(target, "addMobileControls")) {
+				target.addMobileControls(defaultDrawTarget, extraButtons);
+			}
 		});
 
 		Lua_helper.add_callback(lua, "removeMobileControls", function() 

@@ -1,9 +1,11 @@
 package mobile.controls;
 
 import flixel.FlxG;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import openfl.display.BitmapData;
-import openfl.display.Shape;
 import mobile.backend.MobileUtil;
 import mobile.backend.flixel.TouchButton;
 import mobile.backend.flixel.input.TouchInputManager;
@@ -13,7 +15,6 @@ import mobile.backend.flixel.input.TouchInputID;
  * Hitbox... HIT
  * @author StarNova (Cream.BR)
  */
- 
 class MobileHitbox extends TouchInputManager
 {
 	public var buttons:Array<TouchButton> = [];
@@ -22,25 +23,35 @@ class MobileHitbox extends TouchInputManager
 	public var buttonDown:TouchButton;
 	public var buttonUp:TouchButton;
 	public var buttonRight:TouchButton;
+	
+	public var buttonAction:TouchButton;
+	public var buttonActionTwo:TouchButton;
 
 	private final alphaTarget:Float = 0.2;
 	
 	private var _cachedGraphics:Map<Int, flixel.graphics.FlxGraphic> = new Map();
 
-	public function new():Void
+	public function new(?extraButtons:Int = 0):Void
 	{
 		super();
 
+		extraButtons = Std.int(Math.max(0, Math.min(2, extraButtons)));
+
+		var hasExtraButtons:Bool = extraButtons > 0;
+		var hitboxY:Int = hasExtraButtons ? Std.int(FlxG.height * 0.25) : 0;
+		var hitboxHeight:Int = hasExtraButtons ? Std.int(FlxG.height * 0.75) : FlxG.height;
+		var extraHeight:Int = hasExtraButtons ? Std.int(FlxG.height * 0.25) : 0;
+
 		var buttonWidth:Int = Std.int(FlxG.width / 4);
-		var data = [
+		var mainData = [
 			{color: 0xFF00FF, ids: [TouchInputID.NOTE_LEFT]},
 			{color: 0x00FFFF, ids: [TouchInputID.NOTE_DOWN]},
 			{color: 0x00FF00, ids: [TouchInputID.NOTE_UP]},
 			{color: 0xFF0000, ids: [TouchInputID.NOTE_RIGHT]}
 		];
 		
-		for (i in 0...data.length) {
-			var btn = createHint(i * buttonWidth, 0, buttonWidth, FlxG.height, data[i].color, data[i].ids);
+		for (i in 0...mainData.length) {
+			var btn = createHint(i * buttonWidth, hitboxY, buttonWidth, hitboxHeight, mainData[i].color, mainData[i].ids);
 			add(btn);
 			buttons.push(btn);
 		}
@@ -49,6 +60,27 @@ class MobileHitbox extends TouchInputManager
 		buttonDown  = buttons[1];
 		buttonUp    = buttons[2];
 		buttonRight = buttons[3];
+
+		if (hasExtraButtons)
+		{
+			if (extraButtons == 2)
+			{
+				buttonAction = createHint(0, 0, Std.int(FlxG.width / 2), extraHeight, 0xFFFF00, [TouchInputID.NONE]);
+				buttonActionTwo = createHint(Std.int(FlxG.width / 2), 0, Std.int(FlxG.width / 2), extraHeight, 0x800080, [TouchInputID.NONE,]);
+				
+				add(buttonAction);
+				buttons.push(buttonAction);
+				add(buttonActionTwo);
+				buttons.push(buttonActionTwo);
+			}
+			else if (extraButtons == 1)
+			{
+				buttonAction = createHint(0, 0, FlxG.width, extraHeight, 0xFFFF00, [TouchInputID.HITBOX_HEART_LEFT, TouchInputID.HEART_LEFT]);
+				
+				add(buttonAction);
+				buttons.push(buttonAction);
+			}
+		}
 
 		scrollFactor.set();
 		refreshMappedButtons();
@@ -102,30 +134,17 @@ class MobileHitbox extends TouchInputManager
 		
 		return hint;
 	}
-
-    // It will be used for skins in the future
-	/*private function createHintGraphic(Width:Int, Height:Int, Color:Int):BitmapData
-	{
-		var shape:Shape = new Shape();
-		shape.graphics.beginFill(Color);
-		shape.graphics.drawRect(0, 0, Width, Height);
-		shape.graphics.endFill();
-
-		var bitmap:BitmapData = new BitmapData(Width, Height, true, 0);
-		bitmap.draw(shape);
-		return bitmap;
-	}*/
 	
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-	
 		MobileUtil.setControlsState(this, buttons);
 	}
 
 	override function destroy():Void
 	{
 		super.destroy();
+
 		for (btn in buttons)
 			FlxDestroyUtil.destroy(btn);
 			
