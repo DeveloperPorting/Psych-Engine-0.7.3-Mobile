@@ -106,7 +106,7 @@ class Song
 		if(rawJson == null) {
 			var path:String = Paths.json(formattedFolder + '/' + formattedSong);
 
-			#if sys
+			#if MODS_ALLOWED
 			if(FileSystem.exists(path))
 				rawJson = File.getContent(path).trim();
 			else

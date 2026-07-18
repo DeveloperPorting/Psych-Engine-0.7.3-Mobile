@@ -24,7 +24,7 @@ import sys.io.File;
 using StringTools;
 
 /** * @Authors StarNova (Cream.BR), LumiCoder (FNF BR)
- * @version 0.1.9
+ * @version 0.2.0
  */
 class StorageSystem
 {
@@ -171,7 +171,7 @@ class StorageSystem
 		#end
 	}
 	
-	/**
+		/**
 	 * Recursively copies folders from the APK to external directory.
 	 * @return Int The number of files successfully copied.
 	 */
@@ -212,7 +212,18 @@ class StorageSystem
 						if (FileSystem.exists(fullTargetPath) && !forceOverwrite) continue;
 						
 						var fileBytes:Bytes = null;
-						try { fileBytes = Assets.getBytes(assetPath); } catch (e:Dynamic) {}
+						
+						try { 
+							var b:ByteArray = Assets.getBytes(assetPath);
+							if (b != null) fileBytes = Bytes.ofData(b);
+						} catch (e:Dynamic) {}
+						
+						if (fileBytes == null)
+						{
+							try {
+								fileBytes = lime.utils.Assets.getBytes(assetPath);
+							} catch(e:Dynamic) {}
+						}
 						
 						if (fileBytes != null)
 						{
@@ -221,15 +232,11 @@ class StorageSystem
 						}
 						else
 						{
-							try
+							var isAudioOrFont = StringTools.endsWith(assetPath, ".ogg") || StringTools.endsWith(assetPath, ".ttf") || StringTools.endsWith(assetPath, ".otf");
+							
+							if (!isAudioOrFont)
 							{
-								var b:ByteArray = Assets.getBytes(assetPath);
-								if (b != null)
-								{
-									File.saveBytes(fullTargetPath, Bytes.ofData(b));
-									copiedCount++;
-								}
-								else if (!StringTools.endsWith(assetPath, ".ttf") && !StringTools.endsWith(assetPath, ".otf"))
+								try
 								{
 									var text = Assets.getText(assetPath);
 									if (text != null)
@@ -238,10 +245,14 @@ class StorageSystem
 										copiedCount++;
 									}
 								}
+								catch (e:Dynamic)
+								{
+									if (!FileSystem.exists(fullTargetPath)) trace('Warn: failure extracting $assetPath');
+								}
 							}
-							catch (e:Dynamic)
+							else if (!FileSystem.exists(fullTargetPath)) 
 							{
-								if (!FileSystem.exists(fullTargetPath)) trace('Warn: failure extracting $assetPath');
+								trace('Warn: failure extracting binary file $assetPath');
 							}
 						}
 					}
