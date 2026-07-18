@@ -178,6 +178,7 @@ class ModsMenuState extends MusicBeatState
 			add(txt);
 
 			FlxG.autoPause = false;
+			#if mobile virtualPad.buttonUp.visible = virtualPad.buttonDown.visible = false; #end
 			changeSelectedMod();
 			return super.create();
 		}
@@ -297,6 +298,8 @@ class ModsMenuState extends MusicBeatState
 		add(bgList);
 		add(modsGroup);
 		_lastControllerMode = controls.controllerMode;
+		
+		addVirtualPadCamera();
 
 		changeSelectedMod();
 		super.create();
@@ -311,12 +314,7 @@ class ModsMenuState extends MusicBeatState
 	var holdTime:Float = 0;
 
 	override function update(elapsed:Float)
-	{
-	    #if mobile
-		if (controls.isInSubstate)
-            controls.isInSubstate = false;
-        #end
-        
+	{        
 		if(controls.BACK #if android || FlxG.android.justReleased.BACK #end && hoveringOnMods)
 		{
 			if(colorTween != null) {
@@ -805,7 +803,7 @@ class ModsMenuState extends MusicBeatState
 		}
 
 		var path:String = 'modsList.txt';
-		File.saveContent(path, fileStr);
+		File.saveContent(#if mobile StorageSystem.getDirectory() + #end path, fileStr);
 	}
 }
 
