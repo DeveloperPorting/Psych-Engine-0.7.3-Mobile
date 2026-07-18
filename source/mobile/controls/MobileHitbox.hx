@@ -75,7 +75,7 @@ class MobileHitbox extends TouchInputManager
 			}
 			else if (extraButtons == 1)
 			{
-				buttonAction = createHint(0, 0, FlxG.width, extraHeight, 0xFFFF00, [TouchInputID.HITBOX_HEART_LEFT, TouchInputID.HEART_LEFT]);
+				buttonAction = createHint(0, 0, FlxG.width, extraHeight, 0xFFFF00, [TouchInputID.NONE]);
 				
 				add(buttonAction);
 				buttons.push(buttonAction);
