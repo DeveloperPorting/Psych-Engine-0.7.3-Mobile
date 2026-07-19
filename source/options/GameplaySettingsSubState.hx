@@ -21,6 +21,14 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		addOption(option);
 		
 		#if mobile
+		var option:Option = new Option('Extra Buttons',
+			'Adds extra buttons to the Hitbox\n(This is useful for mechanics with Lua or HScript)',
+			'extraButtons',
+			'int');
+		option.minValue = 0;
+		option.maxValue = 2;
+		addOption(option);
+		
 		var option:Option = new Option('Invisible Hitbox',
             'If checked, the hitbox will become invisible.',
             'invisibleHitbox',

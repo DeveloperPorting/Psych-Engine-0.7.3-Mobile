@@ -38,6 +38,7 @@ import states.TitleState;
 
 	public var ghostTapping:Bool = true;
 	#if mobile
+	public var extraButtons:Int = 0;
 	public var invisibleHitbox:Bool = false;
 	#if !ios public var invisibleButtonPause:Bool = false; #end
 	#end

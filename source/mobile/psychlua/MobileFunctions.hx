@@ -134,12 +134,9 @@ class MobileFunctions
 		Lua_helper.add_callback(lua, "touchUtilJustReleased", TouchUtil.justReleased);
 		Lua_helper.add_callback(lua, "touchUtilReleased", TouchUtil.released);
 		
-		Lua_helper.add_callback(lua, "setHitboxVisible", function(visible:Bool = false):Void
+		Lua_helper.add_callback(lua, "setHitboxVisible", function(?visible:Bool = false):Void
 		{
-			var target = getTargetState();
-			if (target != null && target.hitbox != null) {
-				target.hitbox.visible = visible;
-			}
+			PlayState.instance.hitbox.visible = visible;
 		});
 		
 		Lua_helper.add_callback(lua, "enableKeyboard", function()
@@ -171,20 +168,6 @@ class MobileFunctions
 		{
 			var target = getTargetState();
 			if (target != null) target.removeVirtualPad();
-		});
-
-		Lua_helper.add_callback(lua, "addMobileControls", function(?defaultDrawTarget:Bool = false, ?extraButtons:Int = 0) 
-		{
-			var target = getTargetState();
-			if (target != null && Reflect.hasField(target, "addMobileControls")) {
-				target.addMobileControls(defaultDrawTarget, extraButtons);
-			}
-		});
-
-		Lua_helper.add_callback(lua, "removeMobileControls", function() 
-		{
-			var target = getTargetState();
-			if (target != null) target.removeMobileControls();
 		});
 
 		Lua_helper.add_callback(lua, "virtualPadJustPressed", function(button:String):Bool {

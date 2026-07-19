@@ -71,9 +71,9 @@ class MusicBeatState extends FlxUIState
 		}
 	}
 
-	public function addMobileControls(DefaultDrawTarget:Bool = false, ?extraButtons:Int = 0)
+	public function addMobileControls(DefaultDrawTarget:Bool = false)
 	{
-		hitbox = new MobileHitbox(extraButtons);
+		hitbox = new MobileHitbox();
 
 		hitboxCam = new FlxCamera();
 		hitboxCam.bgColor.alpha = 0;

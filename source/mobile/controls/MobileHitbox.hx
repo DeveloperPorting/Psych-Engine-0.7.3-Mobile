@@ -19,6 +19,8 @@ class MobileHitbox extends TouchInputManager
 {
 	public var buttons:Array<TouchButton> = [];
 	
+	var extraButtons:Int;
+	
 	public var buttonLeft:TouchButton;
 	public var buttonDown:TouchButton;
 	public var buttonUp:TouchButton;
@@ -31,11 +33,11 @@ class MobileHitbox extends TouchInputManager
 	
 	private var _cachedGraphics:Map<Int, flixel.graphics.FlxGraphic> = new Map();
 
-	public function new(?extraButtons:Int = 0):Void
+	public function new():Void
 	{
 		super();
 
-		extraButtons = Std.int(Math.max(0, Math.min(2, extraButtons)));
+		extraButtons = ClientPrefs.data.extraButtons;
 
 		var hasExtraButtons:Bool = extraButtons > 0;
 		var hitboxY:Int = hasExtraButtons ? Std.int(FlxG.height * 0.25) : 0;
