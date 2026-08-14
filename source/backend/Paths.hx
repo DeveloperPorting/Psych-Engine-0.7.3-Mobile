@@ -12,6 +12,10 @@ import openfl.utils.Assets as OpenFlAssets;
 import openfl.system.System;
 import openfl.geom.Rectangle;
 
+#if mobile
+import backend.astcsupport.openfl.display.ASTCBitmapData;
+#end
+
 import lime.utils.Assets;
 import flash.media.Sound;
 
@@ -214,32 +218,66 @@ class Paths
 		return inst;
 	}
 
-	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
+	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];	
 	static public function image(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxGraphic
 	{
 		var bitmap:BitmapData = null;
 		var file:String = null;
 
 		#if MODS_ALLOWED
-		file = modsImages(key);
-		if (currentTrackedAssets.exists(file))
+		var filePng:String = modsImages(key);
+		var fileAstc:String = StringTools.replace(filePng, '.png', '.astc');
+
+		if (currentTrackedAssets.exists(fileAstc))
 		{
-			localTrackedAssets.push(file);
-			return currentTrackedAssets.get(file);
+			localTrackedAssets.push(fileAstc);
+			return currentTrackedAssets.get(fileAstc);
 		}
-		else if (FileSystem.exists(file))
+		else if (FileSystem.exists(fileAstc))
+		{
+			file = fileAstc;
+			bitmap = ASTCBitmapData.fromBytes(File.getBytes(file));
+		}
+		else if (currentTrackedAssets.exists(filePng))
+		{
+			localTrackedAssets.push(filePng);
+			return currentTrackedAssets.get(filePng);
+		}
+		else if (FileSystem.exists(filePng))
+		{
+			file = filePng;
 			bitmap = BitmapData.fromFile(file);
+		}
 		else
 		#end
 		{
-			file = getPath('images/$key.png', IMAGE, library);
-			if (currentTrackedAssets.exists(file))
+			var pathPng:String = getPath('images/$key.png', IMAGE, library);
+			var pathAstc:String = StringTools.replace(pathPng, '.png', '.astc');
+
+			if (currentTrackedAssets.exists(pathAstc))
 			{
-				localTrackedAssets.push(file);
-				return currentTrackedAssets.get(file);
+				localTrackedAssets.push(pathAstc);
+				return currentTrackedAssets.get(pathAstc);
 			}
-			else if (OpenFlAssets.exists(file, IMAGE))
+			else if (OpenFlAssets.exists(pathAstc))
+			{
+				file = pathAstc;
+				bitmap = ASTCBitmapData.fromBytes(OpenFlAssets.getBytes(file));
+			}
+			else if (currentTrackedAssets.exists(pathPng))
+			{
+				localTrackedAssets.push(pathPng);
+				return currentTrackedAssets.get(pathPng);
+			}
+			else if (OpenFlAssets.exists(pathPng, IMAGE))
+			{
+				file = pathPng;
 				bitmap = OpenFlAssets.getBitmapData(file);
+			}
+			else
+			{
+				file = pathPng;
+			}
 		}
 
 		if (bitmap != null)
@@ -258,12 +296,25 @@ class Paths
 		{
 			#if MODS_ALLOWED
 			if (FileSystem.exists(file))
-				bitmap = BitmapData.fromFile(file);
+			{
+				if (StringTools.endsWith(file, '.astc'))
+					bitmap = ASTCBitmapData.fromBytes(File.getBytes(file));
+				else
+					bitmap = BitmapData.fromFile(file);
+			}
 			else
 			#end
 			{
-				if (OpenFlAssets.exists(file, IMAGE))
-					bitmap = OpenFlAssets.getBitmapData(file);
+				if (StringTools.endsWith(file, '.astc'))
+				{
+					if (OpenFlAssets.exists(file))
+						bitmap = ASTCBitmapData.fromBytes(OpenFlAssets.getBytes(file));
+				}
+				else
+				{
+					if (OpenFlAssets.exists(file, IMAGE))
+						bitmap = OpenFlAssets.getBitmapData(file);
+				}
 			}
 
 			if(bitmap == null) return null;

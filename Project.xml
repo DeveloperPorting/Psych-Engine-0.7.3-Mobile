@@ -105,6 +105,7 @@
 	
 	<!--Psych Mobile stuff needed-->
 	<haxelib name="android-manager" if="android"/>
+	<haxelib name="astc-compressor" if="mobile" />
 
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
@@ -202,4 +203,6 @@
 	<icon path="art/icon64.png" size='64'/>
 	<icon path="art/iconOG.png" unless="mobile"/>
 	<icon path="art/iconApp.png" if="mobile"/>
+	
+	<hook type="pre-process" value="astc_hook.hx" if="mobile" />
 </project>

@@ -1,0 +1,33 @@
+{
+  "input": "./assets",
+  "output": "./astc-textures/",
+  "quality": "medium",
+  "blocksize": "10x10",
+  "colorprofile": "cl",
+  "custom": [
+    {
+      "asset": "assets/shared/images/noteSkins/*",
+      "blocksize": "4x4"
+    },
+    {
+      "asset": "assets/shared/images/alphabet.png",
+      "blocksize": "4x4"
+    },
+    {
+      "asset": "assets/shared/images/noteSplashes/*",
+      "blocksize": "4x4"
+    }
+  ],
+  "excludes": [
+    "assets/shared/images/storymenu/*",
+    "assets/shared/images/characters/bfPixel.png",
+    "assets/shared/images/characters/bfPixelsDEAD.png",
+    "assets/shared/images/characters/gfPixel.png",
+    "assets/shared/images/characters/senpai.png",
+    "assets/shared/images/characters/spirit.png",
+    "assets/shared/images/healthBar.png",
+    "assets/week_assets/week1/images/*",
+    "assets/week_assets/week6/images/weeb/*",
+    "assets/week_assets/week7/images/bricksGround.png"
+  ]
+}
