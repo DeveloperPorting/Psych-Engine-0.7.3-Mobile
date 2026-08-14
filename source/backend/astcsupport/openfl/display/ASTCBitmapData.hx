@@ -102,7 +102,7 @@ class ASTCBitmapData extends BitmapData {
 		if (value == null) {
 			throw 'Don\'t support ASTC $format extension.';
 		}
-		var context3D:Context3D = Lib.current.stage.context3D;
+		var context3D:Context3D = openfl.Lib.current.stage.context3D;
 		var rectangleTexture:RectangleTexture = new RectangleTexture(context3D, width, height, null, false);
 		GL.bindTexture(GL.TEXTURE_2D, rectangleTexture.__textureID);
 		rectangleTexture.__format = astcFormat;
