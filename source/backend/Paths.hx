@@ -227,38 +227,29 @@ class Paths
 		#if MODS_ALLOWED
 		#if ASTC_SUPPORT
 		var fileAstc:String = modFolders('images/' + key + '.astc');
-		trace('BUSCANDO [ASTC/Mods]: ' + fileAstc);
 		
 		if (currentTrackedAssets.exists(fileAstc))
 		{
-			trace('ENCONTRADO NO CACHE [ASTC/Mods]: ' + fileAstc);
 			localTrackedAssets.push(fileAstc);
 			return currentTrackedAssets.get(fileAstc);
 		}
 		else if (FileSystem.exists(fileAstc))
 		{
-			trace('ENCONTRADO NO HD [ASTC/Mods]: Lendo bytes crus de ' + fileAstc);
 			file = fileAstc;
 			bitmap = ASTCBitmapData.fromBytes(File.getBytes(file));
-			if (bitmap != null) trace('SUCESSO: ASTC processado via FileSystem!');
-			else trace('ERRO: Falha ao decodificar ASTCBitmapData a partir dos bytes (Mods).');
 		}
 		#end
 
 		if (bitmap == null)
 		{
 			var filePng:String = modsImages(key);
-			trace('BUSCANDO [PNG/Mods]: ' + filePng);
-			
 			if (currentTrackedAssets.exists(filePng))
 			{
-				trace('ENCONTRADO NO CACHE [PNG/Mods]: ' + filePng);
 				localTrackedAssets.push(filePng);
 				return currentTrackedAssets.get(filePng);
 			}
 			else if (FileSystem.exists(filePng))
 			{
-				trace('ENCONTRADO NO HD [PNG/Mods]: Carregando ' + filePng);
 				file = filePng;
 				bitmap = BitmapData.fromFile(file);
 			}
@@ -271,36 +262,28 @@ class Paths
 			
 			#if ASTC_SUPPORT
 			var pathAstc:String = StringTools.replace(pathPng, '.png', '.astc');
-			trace('BUSCANDO [ASTC/Assets]: ' + pathAstc);
 
 			if (currentTrackedAssets.exists(pathAstc))
 			{
-				trace('ENCONTRADO NO CACHE [ASTC/Assets]: ' + pathAstc);
 				localTrackedAssets.push(pathAstc);
 				return currentTrackedAssets.get(pathAstc);
 			}
 			else if (OpenFlAssets.exists(pathAstc))
 			{
-				trace('ENCONTRADO NO OPENFL [ASTC/Assets]: Lendo bytes crus de ' + pathAstc);
 				file = pathAstc;
 				bitmap = ASTCBitmapData.fromBytes(OpenFlAssets.getBytes(file));
-				if (bitmap != null) trace('SUCESSO: ASTC processado via OpenFlAssets!');
-				else trace('ERRO: Falha ao decodificar ASTCBitmapData a partir dos bytes (Assets).');
 			}
 			#end
 			
 			if (bitmap == null)
 			{
-				trace('BUSCANDO [PNG/Assets]: ' + pathPng);
 				if (currentTrackedAssets.exists(pathPng))
 				{
-					trace('ENCONTRADO NO CACHE [PNG/Assets]: ' + pathPng);
 					localTrackedAssets.push(pathPng);
 					return currentTrackedAssets.get(pathPng);
 				}
 				else if (OpenFlAssets.exists(pathPng, IMAGE))
 				{
-					trace('ENCONTRADO NO OPENFL [PNG/Assets]: Carregando ' + pathPng);
 					file = pathPng;
 					bitmap = OpenFlAssets.getBitmapData(file);
 				}
@@ -313,14 +296,8 @@ class Paths
 
 		if (bitmap != null)
 		{
-			trace('INICIANDO CACHEBITMAP PARA: ' + file);
 			var retVal = cacheBitmap(file, bitmap, allowGPU);
-			if (retVal != null) {
-				trace('IMAGEM RETORNADA COM SUCESSO: ' + file);
-				return retVal;
-			} else {
-				trace('ERRO CRÍTICO: cacheBitmap retornou null para ' + file);
-			}
+			if (retVal != null) return retVal;
 		}
 
 		trace('oh no its returning null NOOOO ($file)');
@@ -331,21 +308,15 @@ class Paths
 	{
 		if(bitmap == null)
 		{
-			trace('cacheBitmap disparado sem bitmap! Tentando recarregar do zero para: ' + file);
 			#if MODS_ALLOWED
 			if (FileSystem.exists(file))
 			{
 				#if ASTC_SUPPORT
-				if (StringTools.endsWith(file, '.astc')) {
-					trace('Lendo ASTC (HD/Mods)...');
+				if (StringTools.endsWith(file, '.astc'))
 					bitmap = ASTCBitmapData.fromBytes(File.getBytes(file));
-				}
 				else
 				#end
-				{
-					trace('Lendo PNG (HD/Mods)...');
 					bitmap = BitmapData.fromFile(file);
-				}
 			}
 			else
 			#end
@@ -353,40 +324,32 @@ class Paths
 				#if ASTC_SUPPORT
 				if (StringTools.endsWith(file, '.astc'))
 				{
-					if (OpenFlAssets.exists(file)) {
-						trace('Lendo ASTC (OpenFL/Assets)...');
+					if (OpenFlAssets.exists(file))
 						bitmap = ASTCBitmapData.fromBytes(OpenFlAssets.getBytes(file));
-					}
 				}
 				else
 				#end
 				{
-					if (OpenFlAssets.exists(file, IMAGE)) {
-						trace('Lendo PNG (OpenFL/Assets)...');
+					if (OpenFlAssets.exists(file, IMAGE))
 						bitmap = OpenFlAssets.getBitmapData(file);
-					}
 				}
 			}
 
-			if(bitmap == null) {
-				trace('FALHA FATAL: Não foi possível obter dados para ' + file + ' no cacheBitmap.');
-				return null;
-			}
+			if(bitmap == null) return null;
 		}
 
 		localTrackedAssets.push(file);
 		
-		if (allowGPU && ClientPrefs.data.cacheOnGPU && FlxG.stage != null && FlxG.stage.context3D != null)
+		var isAstc:Bool = false;
+		#if ASTC_SUPPORT
+		isAstc = StringTools.endsWith(file, '.astc');
+		#end
+		
+		if (allowGPU && ClientPrefs.data.cacheOnGPU && !isAstc)
 		{
-			trace('Enviando para a GPU (VRAM): ' + file);
 			var texture:RectangleTexture = FlxG.stage.context3D.createRectangleTexture(bitmap.width, bitmap.height, BGRA, true);
 			texture.uploadFromBitmapData(bitmap);
-			
-			if (bitmap.image != null)
-			{
-				bitmap.image.data = null;
-			}
-			
+            bitmap.image.data = null;
 			bitmap.dispose();
 			bitmap.disposeImage();
 			bitmap = BitmapData.fromTexture(texture);
@@ -397,7 +360,6 @@ class Paths
 		newGraphic.destroyOnNoUse = false;
 		currentTrackedAssets.set(file, newGraphic);
 		
-		trace('CACHE CONCLUÍDO COM SUCESSO: ' + file);
 		return newGraphic;
 	}
 
