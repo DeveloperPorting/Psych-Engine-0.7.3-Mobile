@@ -26,6 +26,7 @@
 	<define name="VIDEOS_ALLOWED" if="windows || linux || mobile" unless="32bits"/>
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="DISCORD_ALLOWED" unless="mobile" />
+	<define name="ASTC_SUPPORT" if="mobile" />
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
 
 	<section if="officialBuild">
@@ -105,7 +106,7 @@
 	
 	<!--Psych Mobile stuff needed-->
 	<haxelib name="android-manager" if="android"/>
-	<haxelib name="astc-compressor" if="mobile" />
+	<haxelib name="astc-compressor" if="ASTC_SUPPORT" />
 
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
@@ -204,5 +205,5 @@
 	<icon path="art/iconOG.png" unless="mobile"/>
 	<icon path="art/iconApp.png" if="mobile"/>
 	
-	<hook type="pre-process" value="astc_hook.hx" if="mobile" />
+	<hook type="pre-process" value="PreASTC.hx" if="ASTC_SUPPORT" />
 </project>
