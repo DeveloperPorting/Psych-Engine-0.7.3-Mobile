@@ -218,7 +218,7 @@ class Paths
 		return inst;
 	}
 
-	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];	
+	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
 	static public function image(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxGraphic
 	{
 		var bitmap:BitmapData = null;
@@ -226,86 +226,86 @@ class Paths
 
 		#if MODS_ALLOWED
 		var filePng:String = modsImages(key);
-		var fileAstc:String = StringTools.replace(filePng, '.png', '.astc');
-
+		
 		#if ASTC_SUPPORT
+		var fileAstc:String = StringTools.replace(filePng, '.png', '.astc');
+		trace('BUSCANDO [ASTC/Mods]: ' + fileAstc);
+		
 		if (currentTrackedAssets.exists(fileAstc))
 		{
-			trace('[ASTC/Cache] Encontrado no cache de mods (ASTC): $fileAstc');
+			trace('ENCONTRADO NO CACHE [ASTC/Mods]: ' + fileAstc);
 			localTrackedAssets.push(fileAstc);
 			return currentTrackedAssets.get(fileAstc);
 		}
 		else if (FileSystem.exists(fileAstc))
 		{
-			trace('[ASTC/Disk] Carregando arquivo do disco de mods (ASTC): $fileAstc');
+			trace('ENCONTRADO NO HD [ASTC/Mods]: Lendo bytes crus de ' + fileAstc);
 			file = fileAstc;
 			bitmap = ASTCBitmapData.fromBytes(File.getBytes(file));
+			if (bitmap != null) trace('SUCESSO: ASTC processado via FileSystem!');
+			else trace('ERRO: Falha ao decodificar ASTCBitmapData a partir dos bytes (Mods).');
 		}
-		else
 		#end
+
+		if (bitmap == null)
 		{
+			trace('BUSCANDO [PNG/Mods]: ' + filePng);
 			if (currentTrackedAssets.exists(filePng))
 			{
-				trace('[PNG/Cache] Encontrado no cache de mods (PNG): $filePng');
+				trace('ENCONTRADO NO CACHE [PNG/Mods]: ' + filePng);
 				localTrackedAssets.push(filePng);
 				return currentTrackedAssets.get(filePng);
 			}
 			else if (FileSystem.exists(filePng))
 			{
-				trace('[PNG/Disk] Carregando arquivo do disco de mods (PNG): $filePng');
+				trace('ENCONTRADO NO HD [PNG/Mods]: Carregando ' + filePng);
 				file = filePng;
 				bitmap = BitmapData.fromFile(file);
 			}
-			else
-			{
-				#if ASTC_SUPPORT
-				trace('[Mod Warning] Não foi encontrado nem ASTC nem PNG nos mods para a chave: $key (Tentado: $fileAstc / $filePng)');
-				#else
-				trace('[Mod Warning] Não foi encontrado PNG nos mods para a chave: $key (Tentado: $filePng)');
-				#end
-			}
 		}
 		#end
+
 		if (bitmap == null)
 		{
 			var pathPng:String = getPath('images/$key.png', IMAGE, library);
-			var pathAstc:String = StringTools.replace(pathPng, '.png', '.astc');
-
+			
 			#if ASTC_SUPPORT
+			var pathAstc:String = StringTools.replace(pathPng, '.png', '.astc');
+			trace('BUSCANDO [ASTC/Assets]: ' + pathAstc);
+
 			if (currentTrackedAssets.exists(pathAstc))
 			{
-				trace('[ASTC/CacheAssets] Encontrado no cache de assets (ASTC): $pathAstc');
+				trace('ENCONTRADO NO CACHE [ASTC/Assets]: ' + pathAstc);
 				localTrackedAssets.push(pathAstc);
 				return currentTrackedAssets.get(pathAstc);
 			}
 			else if (OpenFlAssets.exists(pathAstc))
 			{
-				trace('[ASTC/OpenFlAssets] Carregando OpenFlAssets (ASTC): $pathAstc');
+				trace('ENCONTRADO NO OPENFL [ASTC/Assets]: Lendo bytes crus de ' + pathAstc);
 				file = pathAstc;
 				bitmap = ASTCBitmapData.fromBytes(OpenFlAssets.getBytes(file));
+				if (bitmap != null) trace('SUCESSO: ASTC processado via OpenFlAssets!');
+				else trace('ERRO: Falha ao decodificar ASTCBitmapData a partir dos bytes (Assets).');
 			}
-			else
 			#end
+			
+			if (bitmap == null)
 			{
+				trace('BUSCANDO [PNG/Assets]: ' + pathPng);
 				if (currentTrackedAssets.exists(pathPng))
 				{
-					trace('[PNG/CacheAssets] Encontrado no cache de assets (PNG): $pathPng');
+					trace('ENCONTRADO NO CACHE [PNG/Assets]: ' + pathPng);
 					localTrackedAssets.push(pathPng);
 					return currentTrackedAssets.get(pathPng);
 				}
 				else if (OpenFlAssets.exists(pathPng, IMAGE))
 				{
-					trace('[PNG/OpenFlAssets] Carregando OpenFlAssets (PNG): $pathPng');
+					trace('ENCONTRADO NO OPENFL [PNG/Assets]: Carregando ' + pathPng);
 					file = pathPng;
 					bitmap = OpenFlAssets.getBitmapData(file);
 				}
 				else
 				{
-					#if ASTC_SUPPORT
-					trace('[Asset Warning] Falha absoluta ao buscar asset (Nem ASTC nem PNG encontrados): $pathAstc / $pathPng');
-					#else
-					trace('[Asset Warning] Falha absoluta ao buscar asset (PNG não encontrado): $pathPng');
-					#end
 					file = pathPng;
 				}
 			}
@@ -313,12 +313,17 @@ class Paths
 
 		if (bitmap != null)
 		{
-			trace('[Success] Bitmap carregado com sucesso para o arquivo: $file. Enviando para cache...');
+			trace('INICIANDO CACHEBITMAP PARA: ' + file);
 			var retVal = cacheBitmap(file, bitmap, allowGPU);
-			if(retVal != null) return retVal;
+			if (retVal != null) {
+				trace('IMAGEM RETORNADA COM SUCESSO: ' + file);
+				return retVal;
+			} else {
+				trace('ERRO CRÍTICO: cacheBitmap retornou null para ' + file);
+			}
 		}
 
-		trace('[ERROR] oh no its returning null NOOOO ($file)');
+		trace('oh no its returning null NOOOO ($file)');
 		return null;
 	}
 
@@ -326,20 +331,19 @@ class Paths
 	{
 		if(bitmap == null)
 		{
-			trace('[CacheBitmap] Bitmap veio nulo na re-tentativa. Recarregando arquivo bruto: $file');
+			trace('cacheBitmap disparado sem bitmap! Tentando recarregar do zero para: ' + file);
 			#if MODS_ALLOWED
 			if (FileSystem.exists(file))
 			{
 				#if ASTC_SUPPORT
-				if (StringTools.endsWith(file, '.astc'))
-				{
-					trace('[CacheBitmap/Disk] Lendo ASTC do disco: $file');
+				if (StringTools.endsWith(file, '.astc')) {
+					trace('Lendo ASTC (HD/Mods)...');
 					bitmap = ASTCBitmapData.fromBytes(File.getBytes(file));
 				}
 				else
 				#end
 				{
-					trace('[CacheBitmap/Disk] Lendo PNG do disco: $file');
+					trace('Lendo PNG (HD/Mods)...');
 					bitmap = BitmapData.fromFile(file);
 				}
 			}
@@ -349,33 +353,32 @@ class Paths
 				#if ASTC_SUPPORT
 				if (StringTools.endsWith(file, '.astc'))
 				{
-					if (OpenFlAssets.exists(file))
-					{
-						trace('[CacheBitmap/Assets] Lendo ASTC via OpenFlAssets: $file');
+					if (OpenFlAssets.exists(file)) {
+						trace('Lendo ASTC (OpenFL/Assets)...');
 						bitmap = ASTCBitmapData.fromBytes(OpenFlAssets.getBytes(file));
 					}
 				}
 				else
 				#end
 				{
-					if (OpenFlAssets.exists(file, IMAGE))
-					{
-						trace('[CacheBitmap/Assets] Lendo PNG via OpenFlAssets: $file');
+					if (OpenFlAssets.exists(file, IMAGE)) {
+						trace('Lendo PNG (OpenFL/Assets)...');
 						bitmap = OpenFlAssets.getBitmapData(file);
 					}
 				}
 			}
 
-			if(bitmap == null)
-			{
-				trace('[CacheBitmap ERROR] Falha ao recarregar o bitmap do arquivo: $file');
+			if(bitmap == null) {
+				trace('FALHA FATAL: Não foi possível obter dados para ' + file + ' no cacheBitmap.');
 				return null;
 			}
 		}
 
 		localTrackedAssets.push(file);
+		
 		if (allowGPU && ClientPrefs.data.cacheOnGPU)
 		{
+			trace('Enviando para a GPU (VRAM): ' + file);
 			var texture:RectangleTexture = FlxG.stage.context3D.createRectangleTexture(bitmap.width, bitmap.height, BGRA, true);
 			texture.uploadFromBitmapData(bitmap);
 			bitmap.image.data = null;
@@ -383,13 +386,15 @@ class Paths
 			bitmap.disposeImage();
 			bitmap = BitmapData.fromTexture(texture);
 		}
-		
+
 		var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, file);
 		newGraphic.persist = true;
 		newGraphic.destroyOnNoUse = false;
 		currentTrackedAssets.set(file, newGraphic);
+		
+		trace('CACHE CONCLUÍDO COM SUCESSO: ' + file);
 		return newGraphic;
-	}	
+	}
 
 	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
 	{

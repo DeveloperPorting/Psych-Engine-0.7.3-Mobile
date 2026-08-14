@@ -195,18 +195,18 @@ class Main extends Sprite
 			+
 			"\nPlease report this error to the GitHub page: https://github.com/DeveloperPorting/Psych-Engine-0.7.3-Mobile\n\n> Crash Handler written by: sqirra-rng";
 
-		if (!FileSystem.exists(StorageSystem.getDirectory() + "crash"))
-			FileSystem.createDirectory(StorageSystem.getDirectory() + "crash");
+		if (!FileSystem.exists(#if mobile StorageSystem.getDirectory() + #end "crash"))
+			FileSystem.createDirectory(#if mobile StorageSystem.getDirectory() + #end "crash");
 
 		File.saveContent(StorageSystem.getDirectory() + path, errMsg + "\n");
 
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
-		#if (ios || desktop)
-		Application.current.window.alert(errMsg, "Error!");
-		#else
+		#if mobile
 		PopUp.showAlert("Error!", errMsg, "Close");
+		#else
+		Application.current.window.alert(errMsg, "Error!");
 		#end
 		#if DISCORD_ALLOWED
 		DiscordClient.shutdown();
