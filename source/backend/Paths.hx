@@ -225,10 +225,8 @@ class Paths
 		var file:String = null;
 
 		#if MODS_ALLOWED
-		var filePng:String = modsImages(key);
-		
 		#if ASTC_SUPPORT
-		var fileAstc:String = StringTools.replace(filePng, '.png', '.astc');
+		var fileAstc:String = modFolders('images/' + key + '.astc');
 		trace('BUSCANDO [ASTC/Mods]: ' + fileAstc);
 		
 		if (currentTrackedAssets.exists(fileAstc))
@@ -249,7 +247,9 @@ class Paths
 
 		if (bitmap == null)
 		{
+			var filePng:String = modsImages(key);
 			trace('BUSCANDO [PNG/Mods]: ' + filePng);
+			
 			if (currentTrackedAssets.exists(filePng))
 			{
 				trace('ENCONTRADO NO CACHE [PNG/Mods]: ' + filePng);
@@ -376,12 +376,17 @@ class Paths
 
 		localTrackedAssets.push(file);
 		
-		if (allowGPU && ClientPrefs.data.cacheOnGPU)
+		if (allowGPU && ClientPrefs.data.cacheOnGPU && FlxG.stage != null && FlxG.stage.context3D != null)
 		{
 			trace('Enviando para a GPU (VRAM): ' + file);
 			var texture:RectangleTexture = FlxG.stage.context3D.createRectangleTexture(bitmap.width, bitmap.height, BGRA, true);
 			texture.uploadFromBitmapData(bitmap);
-			bitmap.image.data = null;
+			
+			if (bitmap.image != null)
+			{
+				bitmap.image.data = null;
+			}
+			
 			bitmap.dispose();
 			bitmap.disposeImage();
 			bitmap = BitmapData.fromTexture(texture);

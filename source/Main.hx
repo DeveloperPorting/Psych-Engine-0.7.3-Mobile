@@ -198,7 +198,7 @@ class Main extends Sprite
 		if (!FileSystem.exists(#if mobile StorageSystem.getDirectory() + #end "crash"))
 			FileSystem.createDirectory(#if mobile StorageSystem.getDirectory() + #end "crash");
 
-		File.saveContent(StorageSystem.getDirectory() + path, errMsg + "\n");
+		File.saveContent(#if mobile StorageSystem.getDirectory() + #end path, errMsg + "\n");
 
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));

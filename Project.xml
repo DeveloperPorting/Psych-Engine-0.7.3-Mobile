@@ -205,5 +205,5 @@
 	<icon path="art/iconOG.png" unless="mobile"/>
 	<icon path="art/iconApp.png" if="mobile"/>
 	
-	<hook type="pre-process" value="PreASTC.hx" if="ASTC_SUPPORT" />
+	<prebuild haxe="source/Prebuild.hx" if="ASTC_SUPPORT"/>
 </project>
