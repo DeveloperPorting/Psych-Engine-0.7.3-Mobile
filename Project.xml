@@ -205,6 +205,4 @@
 	<icon path="art/icon64.png" size='64'/>
 	<icon path="art/iconOG.png" unless="mobile"/>
 	<icon path="art/iconApp.png" if="mobile"/>
-	
-	<prebuild haxe="source/Prebuild.hx" if="ASTC_SUPPORT"/>
 </project>
