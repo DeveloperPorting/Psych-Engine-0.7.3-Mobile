@@ -1,6 +1,6 @@
 package backend.astcsupport.hxastcenc.astc.ios;
 
-#if hx-ios-uikit
+#if hx_ios_uikit
 import haxe.io.Path;
 import cpp.objc.NSDictionary;
 import cpp.objc.NSData;

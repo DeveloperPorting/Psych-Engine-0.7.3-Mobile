@@ -18,7 +18,7 @@
       "blocksize": "4x4"
     }
   ],
-  "excludes": [
+    "excludes": [
     "assets/shared/images/storymenu/*",
     "assets/mobile/pauseButton.png",
     "assets/mobile/virtualpad/*",
@@ -30,6 +30,7 @@
     "assets/shared/images/healthBar.png",
     "assets/week_assets/week1/images/*",
     "assets/week_assets/week6/images/weeb/*",
-    "assets/week_assets/week6/images/weeb/pixelUI/*"
+    "assets/week_assets/week6/images/weeb/pixelUI/*",
+    "assets/secrets/images/*"
   ]
 }

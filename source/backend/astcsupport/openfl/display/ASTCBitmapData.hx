@@ -58,7 +58,7 @@ class ASTCBitmapData extends BitmapData {
 	 * @return ASTCBitmapData
 	 */
 	public static function fromBitmapData(bitmapData:BitmapData):ASTCBitmapData {
-		#if ios
+		#if (ios && hx_ios_uikit)
 		var bytes = AppleASTCEncoder.encodeASTCFromBitmapData(bitmapData);
 		return fromBytes(bytes);
 		#else
