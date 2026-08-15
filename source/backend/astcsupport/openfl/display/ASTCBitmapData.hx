@@ -1,6 +1,6 @@
 package backend.astcsupport.openfl.display;
 
-#if ios
+#if (ios && hx-ios-uikit)
 import backend.astcsupport.hxastcenc.astc.ios.AppleASTCEncoder;
 #end
 import backend.astcsupport.openfl.astc.ASTCLoader;

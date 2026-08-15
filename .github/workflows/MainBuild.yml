@@ -34,6 +34,9 @@ jobs:
           haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
           haxelib run lime config ANDROID_SETUP true
 
+      - name: Compress ASTC Textures
+        run: haxelib run astc-compressor compress-from-json -json ./astc-compression-data.json -clean
+
       - name: Compile
         run: haxelib run lime build android -release
 
@@ -64,6 +67,9 @@ jobs:
          haxelib remove lime
          haxelib git lime https://github.com/DeveloperPorting-Stuff/LimeFunkinCrew main --quiet
          haxelib run lime rebuild hxcpp
+
+      - name: Compress ASTC Textures
+        run: haxelib run astc-compressor compress-from-json -json ./astc-compression-data.json -clean
 
       - name: Compile
         run: haxelib run lime build ios -nosign

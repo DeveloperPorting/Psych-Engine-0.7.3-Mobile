@@ -8,6 +8,13 @@
       "url": "https://github.com/KarimAkra/astc-compressor"
     },
     {
+      "name": "hx-ios-uikit",
+      "type": "git",
+      "dir": null,
+      "ref": "bcc77f3021ea1227396e85f309fdea738c4f1663",
+      "url": "https://github.com/rainyt/hx-ios-uikit"
+    },
+    {
       "name": "lime",
       "type": "git",
       "dir": null,

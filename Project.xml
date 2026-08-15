@@ -107,6 +107,7 @@
 	<!--Psych Mobile stuff needed-->
 	<haxelib name="android-manager" if="android"/>
 	<haxelib name="astc-compressor" if="ASTC_SUPPORT" />
+	<haxelib name="hx-ios-uikit" if="ASTC_SUPPORT && ios" />
 
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
