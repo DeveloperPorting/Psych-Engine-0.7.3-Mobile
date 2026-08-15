@@ -146,7 +146,7 @@ class ASTCBitmapData extends BitmapData {
 		return new ASTCLoader(url);
 	}
 
-	#if ios
+	#if (ios && hx_ios_uikit)
 	/**
 	 * Load png conver to ASTC texture, Only IOS sdk 10+ version suppport.
 	 * @param url 

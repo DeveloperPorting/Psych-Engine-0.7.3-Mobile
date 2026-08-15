@@ -20,7 +20,8 @@
   ],
   "excludes": [
     "assets/shared/images/storymenu/*",
-    "assets/mobile/*",
+    "assets/mobile/pauseButton.png",
+    "assets/mobile/virtualpad/*",
     "assets/shared/images/characters/bfPixel.png",
     "assets/shared/images/characters/bfPixelsDEAD.png",
     "assets/shared/images/characters/gfPixel.png",
@@ -29,6 +30,6 @@
     "assets/shared/images/healthBar.png",
     "assets/week_assets/week1/images/*",
     "assets/week_assets/week6/images/weeb/*",
-    "assets/week_assets/week7/images/bricksGround.png"
+    "assets/week_assets/week6/images/weeb/pixelUI/*"
   ]
 }
