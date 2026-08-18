@@ -184,20 +184,20 @@ class NoteSplashDebugState extends MusicBeatState
 
 		#if mobile
 		addVirtualPad('LEFT_FULL', 'NOTE_SPLASH_DEBUG');
-		virtualPad.buttonUp.y -= 370;
-        virtualPad.buttonDown.y -= 370;
-        virtualPad.buttonLeft.y -= 370;
-        virtualPad.buttonRight.y -= 370;
+		virtualPad.getButton('buttonUp').y -= 370;
+        virtualPad.getButton('buttonDown').y -= 370;
+        virtualPad.getButton('buttonLeft').y -= 370;
+        virtualPad.getButton('buttonRight').y -= 370;
 	
-		virtualPad.buttonUp2.y -= 370;
-        virtualPad.buttonDown2.y -= 370;
-        virtualPad.buttonLeft2.y -= 370;
-        virtualPad.buttonRight2.y -= 370;
+		virtualPad.getButton('buttonUp2').y -= 370;
+        virtualPad.getButton('buttonDown2').y -= 370;
+        virtualPad.getButton('buttonLeft2').y -= 370;
+        virtualPad.getButton('buttonRight2').y -= 370;
 
-        virtualPad.buttonUp2.x -= 120;
-        virtualPad.buttonDown2.x -= 120;
-        virtualPad.buttonLeft2.x -= 130;
-        virtualPad.buttonRight2.x -= 115;
+        virtualPad.getButton('buttonUp2').x -= 120;
+        virtualPad.getButton('buttonDown2').x -= 120;
+        virtualPad.getButton('buttonLeft2').x -= 130;
+        virtualPad.getButton('buttonRight2').x -= 115;
 		#end
 
 		super.create();

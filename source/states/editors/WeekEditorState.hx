@@ -698,7 +698,7 @@ class WeekEditorFreeplayState extends MusicBeatState
 		changeSelection();
 
 		#if mobile
-		addVirtualPad(UP_DOWN, NONE);
+		addVirtualPad('UP_DOWN', 'NONE');
 		#end
 
 		super.create();
@@ -910,9 +910,9 @@ class WeekEditorFreeplayState extends MusicBeatState
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
 
-			if (#if desktop controls.UI_UP_P #else virtualPad.buttonUp.justPressed #end)
+			if (#if desktop controls.UI_UP_P #else virtualPad.getButton('buttonUp').justPressed #end)
 				changeSelection(-1);
-			if (#if desktop controls.UI_DOWN_P #else virtualPad.buttonDown.justPressed #end)
+			if (#if desktop controls.UI_DOWN_P #else virtualPad.getButton('buttonDown').justPressed #end)
 				changeSelection(1);
 		}
 		super.update(elapsed);
