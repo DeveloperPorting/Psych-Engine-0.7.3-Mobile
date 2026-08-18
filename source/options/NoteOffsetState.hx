@@ -526,7 +526,7 @@ class NoteOffsetState extends MusicBeatState
 		
 		timeBar.visible = !onComboMenu;
 		timeTxt.visible = !onComboMenu;
-		#if mobile virtualPad.buttonLeft.visible = virtualPad.buttonRight.visible = !onComboMenu; #end
+		#if mobile virtualPad.getButton('buttonLeft').visible = virtualPad.getButton('buttonRight').visible = !onComboMenu; #end
 		beatText.visible = !onComboMenu;
 
 		controllerPointer.visible = false;
