@@ -40,7 +40,12 @@ class MusicBeatSubstate extends FlxSubState
 	public var hitbox:MobileHitbox;
 	public var hitboxCam:FlxCamera;
 
-    public function addVirtualPad(DPad:MobileDPadMode, Action:MobileActionMode)
+    /**
+	 * Add the Virtual Pad to the screen.
+	 * @param DPad DPad JSON name (e.g. "LEFT_FULL")
+	 * @param Action Action JSON name (e.g. "A_B_C")
+	 */
+	public function addVirtualPad(DPad:String, Action:String)
 	{
 		virtualPad = new MobileVirtualPad(DPad, Action);
 		add(virtualPad);
