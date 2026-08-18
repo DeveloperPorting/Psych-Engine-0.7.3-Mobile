@@ -61,7 +61,7 @@ class OptionsState extends MusicBeatState
 		add(selectorRight);
 		
 		#if mobile
-		addVirtualPad(UP_DOWN, A_B);
+		addVirtualPad('UP_DOWN', 'A_B');
 		#end
 
 		changeSelection();
@@ -84,7 +84,7 @@ class OptionsState extends MusicBeatState
 		
 		#if mobile
 		removeVirtualPad();
-		addVirtualPad(UP_DOWN, A_B);
+		addVirtualPad('UP_DOWN', 'A_B');
 		#end
 	}
 

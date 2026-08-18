@@ -168,7 +168,7 @@ class NotesSubState extends MusicBeatSubstate
 		_lastControllerMode = controls.controllerMode;
 		
 		#if mobile
-		addVirtualPad(NONE, B);
+		addVirtualPad('NONE', 'B');
 		#end
 	}
 
@@ -186,7 +186,7 @@ class NotesSubState extends MusicBeatSubstate
 		NUMPADSEVEN => '7', NUMPADEIGHT => '8', NUMPADNINE => '9', A => 'A', B => 'B', C => 'C', D => 'D', E => 'E', F => 'F'];
 
 	override function update(elapsed:Float) {
-		if (controls.BACK #if mobile || virtualPad.buttonB.justPressed #end) {
+		if (controls.BACK #if mobile || virtualPad.getButton('buttonB').justPressed #end) {
 			FlxG.mouse.visible = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			close();

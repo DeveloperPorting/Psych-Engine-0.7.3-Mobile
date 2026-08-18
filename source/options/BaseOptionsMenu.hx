@@ -103,7 +103,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		
 		#if mobile
 		controls.isInSubstate = true;
-		addVirtualPad(LEFT_FULL, A_B);
+		addVirtualPad('LEFT_FULL', 'A_B');
 		#end
 
 		changeSelection();
