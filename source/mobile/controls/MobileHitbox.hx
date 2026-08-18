@@ -5,14 +5,19 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
+
 import openfl.display.BitmapData;
+import openfl.display.Shape;
+import openfl.display.GradientType;
+import openfl.geom.Matrix;
+
 import mobile.backend.MobileUtil;
 import mobile.backend.flixel.TouchButton;
 import mobile.backend.flixel.input.TouchInputManager;
 import mobile.backend.flixel.input.TouchInputID;
 
 /**
- * Hitbox... HIT
+ * Hitbox... HIT (Now with smooth gradients!)
  * @author StarNova (Cream.BR)
  */
 class MobileHitbox extends TouchInputManager
@@ -29,9 +34,9 @@ class MobileHitbox extends TouchInputManager
 	public var buttonAction:TouchButton;
 	public var buttonActionTwo:TouchButton;
 
-	private final alphaTarget:Float = 0.2;
+	private final alphaTarget:Float = 0.6; 
 	
-	private var _cachedGraphics:Map<Int, flixel.graphics.FlxGraphic> = new Map();
+	private var _cachedGraphics:Map<String, flixel.graphics.FlxGraphic> = new Map();
 
 	public function new():Void
 	{
@@ -68,7 +73,7 @@ class MobileHitbox extends TouchInputManager
 			if (extraButtons == 2)
 			{
 				buttonAction = createHint(0, 0, Std.int(FlxG.width / 2), extraHeight, 0xFFFF00, [TouchInputID.NONE]);
-				buttonActionTwo = createHint(Std.int(FlxG.width / 2), 0, Std.int(FlxG.width / 2), extraHeight, 0x800080, [TouchInputID.NONE,]);
+				buttonActionTwo = createHint(Std.int(FlxG.width / 2), 0, Std.int(FlxG.width / 2), extraHeight, 0x800080, [TouchInputID.NONE]);
 				
 				add(buttonAction);
 				buttons.push(buttonAction);
@@ -92,11 +97,26 @@ class MobileHitbox extends TouchInputManager
 	{
 		var hint:TouchButton = new TouchButton(X, Y, IDs);
 		
-		var graphicKey:Int = Color + Width;
+		var graphicKey:String = Width + "x" + Height + "_" + Color;
 		var bgGraphic:flixel.graphics.FlxGraphic = _cachedGraphics.get(graphicKey);
 		
 		if (bgGraphic == null) {
-			var bitmap:BitmapData = new BitmapData(Width, Height, true, (Color & 0x00FFFFFF) | 0x88000000);
+			var shape:Shape = new Shape();
+			var matrix:Matrix = new Matrix();
+			
+			matrix.createGradientBox(Width, Height, Math.PI / 2, 0, 0);
+
+			var colors:Array<Int> = [Color, Color];
+			var alphas:Array<Float> = [0.0, 0.8]; 
+			var ratios:Array<Int> = [0, 255];
+
+			shape.graphics.beginGradientFill(GradientType.LINEAR, colors, alphas, ratios, matrix);
+			shape.graphics.drawRect(0, 0, Width, Height);
+			shape.graphics.endFill();
+
+			var bitmap:BitmapData = new BitmapData(Width, Height, true, 0x00000000);
+			bitmap.draw(shape);
+			
 			bgGraphic = FlxG.bitmap.add(bitmap, false, "hitbox_" + graphicKey);
 			_cachedGraphics.set(graphicKey, bgGraphic);
 		}
@@ -107,24 +127,24 @@ class MobileHitbox extends TouchInputManager
 		hint.scrollFactor.set();
 		hint.alpha = 0.00001;
 
-        if (!ClientPrefs.data.invisibleHitbox) {
+		if (!ClientPrefs.data.invisibleHitbox) {
 			var hintTween:FlxTween = null;
 			hint.onDown.callback = function() {
-			    if (hintTween != null) hintTween.cancel();
-			    
-			    hintTween = FlxTween.tween(hint, {alpha: alphaTarget}, 0.075, {
-			        ease: FlxEase.circInOut,
-			        onComplete: function(_) { hintTween = null; }
-			    });
+				if (hintTween != null) hintTween.cancel();
+				
+				hintTween = FlxTween.tween(hint, {alpha: alphaTarget}, 0.075, {
+					ease: FlxEase.circInOut,
+					onComplete: function(_) { hintTween = null; }
+				});
 			}
 			
 			hint.onUp.callback = function() {
-			    if (hintTween != null) hintTween.cancel();
-			    
-			    hintTween = FlxTween.tween(hint, {alpha: 0.00001}, 0.15, {
-			        ease: FlxEase.circInOut,
-			        onComplete: function(_) { hintTween = null; }
-			    });
+				if (hintTween != null) hintTween.cancel();
+				
+				hintTween = FlxTween.tween(hint, {alpha: 0.00001}, 0.15, {
+					ease: FlxEase.circInOut,
+					onComplete: function(_) { hintTween = null; }
+				});
 			}
 			
 			hint.onOut.callback = hint.onUp.callback;
