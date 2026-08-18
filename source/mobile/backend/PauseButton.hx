@@ -26,7 +26,7 @@ class PauseButton extends FlxSprite
 
 		#if mobile
 		var bitmap:BitmapData = null;
-		var path:String = 'assets/mobile/pauseButton.png';
+		var path:String = 'assets/mobile/images/pauseButton.png';
 
 		try
 		{

@@ -129,11 +129,11 @@ class MobileVirtualPad extends TouchInputManager
 	private function createButton(X:Float, Y:Float, Graphic:String, Color:Int, IDs:Array<TouchInputID>):TouchButton
 	{
 		var graphic:FlxGraphic = null;
-		var path:String = 'assets/mobile/virtualpad/${Graphic}.png';
+		var path:String = 'assets/mobile/images/virtualpad/${Graphic}.png';
 		var cacheKey:String = path;
 		
 		#if MODS_ALLOWED
-		var modsPath:String = Paths.modFolders('mobile/virtualpad/${Graphic}.png');
+		var modsPath:String = Paths.modFolders('mobile/images/virtualpad/${Graphic}.png');
 		if (FileSystem.exists(modsPath))
 		{
 			cacheKey = modsPath;
@@ -146,7 +146,7 @@ class MobileVirtualPad extends TouchInputManager
 		{
 			if (!Assets.exists(path))
 			{
-				path = 'assets/mobile/virtualpad/default.png';
+				path = 'assets/mobile/images/virtualpad/default.png';
 				cacheKey = path;
 			}
 			
