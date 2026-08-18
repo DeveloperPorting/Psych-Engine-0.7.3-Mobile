@@ -15,168 +15,115 @@ import mobile.backend.MobileUtil;
 import mobile.backend.flixel.input.TouchInputManager;
 import mobile.backend.flixel.input.TouchInputID;
 
+import haxe.Json;
+
 #if MODS_ALLOWED
 import sys.FileSystem;
+import sys.io.File;
 #end
 
-enum MobileDPadMode
-{
-	UP_DOWN;
-	LEFT_RIGHT;
-	UP_LEFT_RIGHT;
-	LEFT_FULL;
-	RIGHT_FULL;
-	CHART_EDITOR;
-	NONE;
+typedef VirtualPadButtonData = {
+	var name:String;
+	var x:Float;
+	var y:Float;
+	var anchorX:String;
+	var anchorY:String;
+	var graphic:String;
+	var color:String;
+	var ids:Array<String>;
 }
 
-enum MobileActionMode
-{
-	A;
-	B;
-	X;
-	A_B;
-	A_B_C;
-	STORYMENU;
-	FREEPLAY;
-	CHART_EDITOR;
-	CHARACTER_EDITOR;
-    NOTE_SPLASH_DEBUG;
-	NONE;
+typedef VirtualPadData = {
+	var buttons:Array<VirtualPadButtonData>;
 }
 
 /**
  * Virtual Pad.... Virtual... Buttons
- *
  * @author StarNova (Cream.BR)
  */
 class MobileVirtualPad extends TouchInputManager
 {
 	public var buttons:Array<TouchButton> = [];
 	
-	public var buttonLeft:TouchButton;
-	public var buttonUp:TouchButton;
-	public var buttonRight:TouchButton;
-	public var buttonDown:TouchButton;
-	public var buttonLeft2:TouchButton;
-	public var buttonUp2:TouchButton;
-	public var buttonRight2:TouchButton;
-	public var buttonDown2:TouchButton;
-	
-	public var buttonA:TouchButton;
-	public var buttonB:TouchButton;
-	public var buttonC:TouchButton;
-	public var buttonD:TouchButton;
-	public var buttonE:TouchButton;
-	public var buttonR:TouchButton;
-	public var buttonV:TouchButton;
-	public var buttonX:TouchButton;
-	public var buttonY:TouchButton;
-	public var buttonZ:TouchButton;
-	public var buttonS:TouchButton;
-	
-	public function new(DPad:MobileDPadMode, Action:MobileActionMode)
+	private var buttonMap:Map<String, TouchButton> = new Map<String, TouchButton>();
+
+	public function new(DPad:String, Action:String)
 	{
 		super();
 		
-		var screenW = FlxG.width;
-		var screenH = FlxG.height;
-		var dPad2_X = 420; // Move para os lados (maior = mais para a direita)
-		var dPad2_Y = screenH - 620; // Move para cima/baixo (maior = mais para cima) só para mim n esquecer sempre q for mexer
-		
-		switch (DPad)
-		{
-			case UP_DOWN:
-				buttonUp = add(createButton(0, FlxG.height - 255, 'up', 0x00FF00, [UP]));
-				buttonDown = add(createButton(0, FlxG.height - 135, 'down', 0x00FFFF, [DOWN]));
-			case LEFT_RIGHT:
-				buttonLeft = add(createButton(0, FlxG.height - 135, 'left', 0xFF00FF, [LEFT]));
-				buttonRight = add(createButton(127, FlxG.height - 135, 'right', 0xFF0000, [RIGHT]));
-			case UP_LEFT_RIGHT:
-				buttonUp = add(createButton(105, FlxG.height - 243, 'up', 0x00FF00, [UP]));
-				buttonLeft = add(createButton(0, FlxG.height - 135, 'left', 0xFF00FF, [LEFT]));
-				buttonRight = add(createButton(207, FlxG.height - 135, 'right', 0xFF0000, [RIGHT]));
-			case LEFT_FULL:
-				buttonUp = add(createButton(105, FlxG.height - 345, 'up', 0x00FF00, [UP]));
-				buttonLeft = add(createButton(0, FlxG.height - 243, 'left', 0xFF00FF, [LEFT]));
-				buttonRight = add(createButton(207, FlxG.height - 243, 'right', 0xFF0000, [RIGHT]));
-				buttonDown = add(createButton(105, FlxG.height - 135, 'down', 0x00FFFF, [DOWN]));
-			case CHART_EDITOR:
-                buttonUp = add(createButton(305, FlxG.height - 345, 'up', 0x00FF00, [UP]));
-				buttonLeft = add(createButton(200, FlxG.height - 243, 'left', 0xFF00FF, [LEFT]));
-				buttonRight = add(createButton(407, FlxG.height - 243, 'right', 0xFF0000, [RIGHT]));		
-				buttonDown = add(createButton(305, FlxG.height - 135, 'down', 0x00FFFF, [DOWN]));
-			case NONE:
-				// lmao
-			default:
-				buttonUp = add(createButton(0, FlxG.height - 255, 'up', 0x00FF00, [UP]));
-				buttonDown = add(createButton(0, FlxG.height - 135, 'down', 0x00FFFF, [DOWN]));
-		}
-		switch (Action)
-		{
-			case A:
-				buttonA = add(createButton(screenW - 132, screenH - 135, 'a', 0xFF0000, [A]));
-			case B:
-				buttonB = add(createButton(screenW - 132, screenH - 135, 'b', 0xFFCB00, [B]));
-			case X:
-				buttonX = add(createButton(screenW - 132, screenH - 135, 'x', 0x99062D, [X]));
-			case A_B:
-				buttonB = add(createButton(screenW - 258, screenH - 135, 'b', 0xFFCB00, [B]));
-				buttonA = add(createButton(screenW - 132, screenH - 135, 'a', 0xFF0000, [A]));
-			case A_B_C:
-				buttonC = add(createButton(screenW - 384, screenH - 135, 'c', 0x44FF00, [C]));
-				buttonB = add(createButton(screenW - 258, screenH - 135, 'b', 0xFFCB00, [B]));
-				buttonA = add(createButton(screenW - 132, screenH - 135, 'a', 0xFF0000, [A]));
-			case STORYMENU:
-			    buttonR = add(createButton(screenW - 510, screenH - 135, 'r', 0x00D0FF, [NONE]));
-				buttonC = add(createButton(screenW - 384, screenH - 135, 'c', 0x44FF00, [C]));
-				buttonB = add(createButton(screenW - 258, screenH - 135, 'b', 0xFFCB00, [B]));
-				buttonA = add(createButton(screenW - 132, screenH - 135, 'a', 0xFF0000, [A]));
-			case FREEPLAY:
-			    buttonX = add(createButton(screenW - 132, screenH - 255, 'x', 0x99062D, [X]));
-			    buttonR = add(createButton(screenW - 510, screenH - 135, 'r', 0x00D0FF, [NONE]));
-				buttonC = add(createButton(screenW - 384, screenH - 135, 'c', 0x44FF00, [C]));
-				buttonB = add(createButton(screenW - 258, screenH - 135, 'b', 0xFFCB00, [B]));
-				buttonA = add(createButton(screenW - 132, screenH - 135, 'a', 0xFF0000, [A]));
-			case CHART_EDITOR:
-				buttonV = add(createButton(screenW - 510, screenH - 255, 'v', 0x49A9B2, [V]));
-				buttonD = add(createButton(screenW - 510, screenH - 135, 'd', 0x0078FF, [D]));
-				buttonX = add(createButton(screenW - 384, screenH - 255, 'x', 0x99062D, [X]));
-				buttonC = add(createButton(screenW - 384, screenH - 135, 'c', 0x44FF00, [C]));
-				buttonY = add(createButton(screenW - 258, screenH - 255, 'y', 0x4A35B9, [Y]));
-				buttonB = add(createButton(screenW - 258, screenH - 135, 'b', 0xFFCB00, [B]));
-				buttonZ = add(createButton(screenW - 132, screenH - 255, 'z', 0xCCB98E, [Z]));
-				buttonA = add(createButton(screenW - 132, screenH - 135, 'a', 0xFF0000, [A]));
-			case CHARACTER_EDITOR:
-				buttonV = add(createButton(screenW - 384, screenH - 255, 'v', 0x49A9B2, [V]));
-				buttonD = add(createButton(screenW - 510, screenH - 135, 'd', 0x0078FF, [D]));
-				buttonX = add(createButton(screenW - 258, screenH - 255, 'x', 0x99062D, [X]));
-				buttonC = add(createButton(screenW - 384, screenH - 135, 'c', 0x44FF00, [C]));
-				buttonB = add(createButton(screenW - 258, screenH - 135, 'b', 0xFFCB00, [B]));
-				buttonZ = add(createButton(screenW - 132, screenH - 255, 'z', 0xCCB98E, [Z]));
-				buttonA = add(createButton(screenW - 132, screenH - 135, 'a', 0xFF0000, [A]));
-			case NOTE_SPLASH_DEBUG:
-				buttonUp2 = add(createButton(screenW - 105, screenH - 345, 'up', 0x00FF00, [UP2]));
-				buttonLeft2 = add(createButton(screenW - 207, screenH - 243, 'left', 0xFF00FF, [LEFT2]));
-				buttonRight2 = add(createButton(screenW, screenH - 243, 'right', 0xFF0000, [RIGHT2]));
-				buttonDown2 = add(createButton(screenW - 105, screenH - 135, 'down', 0x00FFFF, [DOWN2]));
-				buttonV = add(createButton(screenW - 510, screenH - 255, 'v', 0x49A9B2, [V]));
-				buttonD = add(createButton(screenW - 510, screenH - 135, 'd', 0x0078FF, [D]));
-				buttonX = add(createButton(screenW - 384, screenH - 255, 'x', 0x99062D, [X]));
-				buttonC = add(createButton(screenW - 384, screenH - 135, 'c', 0x44FF00, [C]));
-				buttonY = add(createButton(screenW - 258, screenH - 255, 'y', 0x4A35B9, [Y]));
-				buttonB = add(createButton(screenW - 258, screenH - 135, 'b', 0xFFCB00, [B]));
-				buttonZ = add(createButton(screenW - 132, screenH - 255, 'z', 0xCCB98E, [Z]));
-				buttonA = add(createButton(screenW - 132, screenH - 135, 'a', 0xFF0000, [A]));
-			case NONE:
-				// lmao
-			default:
-				buttonB = add(createButton(screenW - 258, screenH - 135, 'b', 0xFFCB00, [B]));
-				buttonA = add(createButton(screenW - 132, screenH - 135, 'a', 0xFF0000, [A]));
-		}
+		loadLayout("dpad", DPad);
+		loadLayout("action", Action);
 		
 		scrollFactor.set();
 		refreshMappedButtons();
+	}
+
+	/**
+	 * Returns a specific button by the name defined in the JSON.
+	 * Ex: pad.getButton("buttonA")
+	 */
+	public function getButton(name:String):TouchButton
+	{
+		return buttonMap.get(name);
+	}
+
+	private function loadLayout(folder:String, layoutName:String):Void
+	{
+		if (layoutName == null || layoutName.toUpperCase() == "NONE") return;
+
+		var path:String = 'assets/mobile/data/$folder/$layoutName.json';
+		var content:String = null;
+
+		#if MODS_ALLOWED
+		var modsPath:String = Paths.modFolders('mobile/data/$folder/$layoutName.json');
+		if (FileSystem.exists(modsPath)) {
+			content = File.getContent(modsPath);
+		} else if (FileSystem.exists(path)) {
+			content = File.getContent(path);
+		}
+		#else
+		if (Assets.exists(path)) {
+			content = Assets.getText(path);
+		}
+		#end
+
+		if (content != null)
+		{
+			try {
+				var data:VirtualPadData = Json.parse(content);
+				
+				if (data != null && data.buttons != null)
+				{
+					for (btnData in data.buttons)
+					{
+						var actualX:Float = btnData.x;
+						var actualY:Float = btnData.y;
+
+						if (btnData.anchorX != null && btnData.anchorX.toLowerCase() == "right") actualX = FlxG.width - btnData.x;
+						if (btnData.anchorY != null && btnData.anchorY.toLowerCase() == "bottom") actualY = FlxG.height - btnData.y;
+
+						var colorInt:Int = 0xFFFFFF;
+						if (btnData.color != null) {
+							var hexString = StringTools.replace(btnData.color, "#", "0x");
+							colorInt = Std.parseInt(hexString);
+						}
+
+						var touchIDs:Array<TouchInputID> = [];
+						for (idStr in btnData.ids) {
+							touchIDs.push(TouchInputID.fromString(idStr));
+						}
+
+						var newButton = add(createButton(actualX, actualY, btnData.graphic, colorInt, touchIDs));
+						
+						buttonMap.set(btnData.name, newButton);
+					}
+				}
+			} catch (e:Dynamic) {
+				trace('Error parsing VirtualPad JSON ($layoutName): $e');
+			}
+		} else {
+			trace('VirtualPad JSON file not found: $path');
+		}
 	}
 	
 	private function createButton(X:Float, Y:Float, Graphic:String, Color:Int, IDs:Array<TouchInputID>):TouchButton
@@ -229,7 +176,6 @@ class MobileVirtualPad extends TouchInputManager
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-	
 		MobileUtil.setControlsState(this, buttons);
 	}
 	
@@ -238,6 +184,7 @@ class MobileVirtualPad extends TouchInputManager
 		for (btn in buttons)
 			FlxDestroyUtil.destroy(btn);
 			
+		buttonMap.clear();
 		super.destroy();
 	}
 }

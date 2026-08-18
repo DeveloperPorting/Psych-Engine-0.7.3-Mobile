@@ -158,7 +158,7 @@ class CharacterEditorState extends MusicBeatState
 			Paths.clearUnusedMemory();
 
 		#if mobile
-		addVirtualPad(LEFT_FULL, CHARACTER_EDITOR);
+		addVirtualPad('LEFT_FULL', 'CHARACTER_EDITOR');
 		addVirtualPadCamera();
 		#end
 
@@ -939,15 +939,15 @@ class CharacterEditorState extends MusicBeatState
 			FlxG.camera.scroll.y -= elapsed * 500 * shiftMult * ctrlMult;
 
 		var lastZoom = FlxG.camera.zoom;
-		if (FlxG.keys.justPressed.R && !FlxG.keys.pressed.CONTROL #if mobile || virtualPad.buttonA.justPressed #end)
+		if (FlxG.keys.justPressed.R && !FlxG.keys.pressed.CONTROL #if mobile || virtualPad.getButton('buttonA').justPressed #end)
 			FlxG.camera.zoom = 1;
-		else if ((FlxG.keys.pressed.E #if mobile || virtualPad.buttonB.pressed #end) && FlxG.camera.zoom < 3)
+		else if ((FlxG.keys.pressed.E #if mobile || virtualPad.getButton('buttonB').pressed #end) && FlxG.camera.zoom < 3)
 		{
 			FlxG.camera.zoom += elapsed * FlxG.camera.zoom * shiftMult * ctrlMult;
 			if (FlxG.camera.zoom > 3)
 				FlxG.camera.zoom = 3;
 		}
-		else if ((FlxG.keys.pressed.Q #if mobile || virtualPad.buttonC.pressed #end) && FlxG.camera.zoom > 0.1)
+		else if ((FlxG.keys.pressed.Q #if mobile || virtualPad.getButton('buttonC').pressed #end) && FlxG.camera.zoom > 0.1)
 		{
 			FlxG.camera.zoom -= elapsed * FlxG.camera.zoom * shiftMult * ctrlMult;
 			if (FlxG.camera.zoom < 0.1)
@@ -961,9 +961,9 @@ class CharacterEditorState extends MusicBeatState
 		var changedAnim:Bool = false;
 		if (anims.length > 1)
 		{
-			if ((FlxG.keys.justPressed.W #if mobile || virtualPad.buttonD.justPressed #end) && (changedAnim = true))
+			if ((FlxG.keys.justPressed.W #if mobile || virtualPad.getButton('buttonD').justPressed #end) && (changedAnim = true))
 				curAnim--;
-			else if ((FlxG.keys.justPressed.S #if mobile || virtualPad.buttonX.justPressed #end) && (changedAnim = true))
+			else if ((FlxG.keys.justPressed.S #if mobile || virtualPad.getButton('buttonX').justPressed #end) && (changedAnim = true))
 				curAnim++;
 
 			if (changedAnim)
@@ -977,16 +977,16 @@ class CharacterEditorState extends MusicBeatState
 
 		var changedOffset = false;
 		var moveKeysP = [
-			 FlxG.keys.justPressed.LEFT  #if mobile || virtualPad.buttonLeft.justPressed #end,
-			FlxG.keys.justPressed.RIGHT #if mobile || virtualPad.buttonRight.justPressed #end,
-			   FlxG.keys.justPressed.UP    #if mobile || virtualPad.buttonUp.justPressed #end,
-			 FlxG.keys.justPressed.DOWN  #if mobile || virtualPad.buttonDown.justPressed #end];
+			 FlxG.keys.justPressed.LEFT  #if mobile || virtualPad.getButton('buttonLeft').justPressed #end,
+			FlxG.keys.justPressed.RIGHT #if mobile || virtualPad.getButton('buttonRight').justPressed #end,
+			   FlxG.keys.justPressed.UP    #if mobile || virtualPad.getButton('buttonUp').justPressed #end,
+			 FlxG.keys.justPressed.DOWN  #if mobile || virtualPad.getButton('buttonDown').justPressed #end];
 
 		var moveKeys = [
-			 FlxG.keys.pressed.LEFT  #if mobile || virtualPad.buttonLeft.pressed #end,
-			FlxG.keys.pressed.RIGHT #if mobile || virtualPad.buttonRight.pressed #end,
-			   FlxG.keys.pressed.UP    #if mobile || virtualPad.buttonUp.pressed #end,
-			 FlxG.keys.pressed.DOWN  #if mobile || virtualPad.buttonDown.pressed #end];
+			 FlxG.keys.pressed.LEFT  #if mobile || virtualPad.getButton('buttonLeft').pressed #end,
+			FlxG.keys.pressed.RIGHT #if mobile || virtualPad.getButton('buttonRight').pressed #end,
+			   FlxG.keys.pressed.UP    #if mobile || virtualPad.getButton('buttonUp').pressed #end,
+			 FlxG.keys.pressed.DOWN  #if mobile || virtualPad.getButton('buttonDown').pressed #end];
 		if (moveKeysP.contains(true))
 		{
 			character.offset.x += ((moveKeysP[0] ? 1 : 0) - (moveKeysP[1] ? 1 : 0)) * shiftMultBig;
@@ -1027,7 +1027,7 @@ class CharacterEditorState extends MusicBeatState
 				copiedOffset[1] = character.offset.y;
 				changedOffset = true;
 			}
-			else if (FlxG.keys.justPressed.V #if mobile || virtualPad.buttonY.justPressed #end)
+			else if (FlxG.keys.justPressed.V #if mobile || virtualPad.getButton('buttonY').justPressed #end)
 			{
 				undoOffsets = [character.offset.x, character.offset.y];
 				character.offset.x = copiedOffset[0];
@@ -1115,10 +1115,10 @@ class CharacterEditorState extends MusicBeatState
 		frameAdvanceText.color = clr;
 
 		// OTHER CONTROLS
-		if (FlxG.keys.justPressed.F12 #if mobile || virtualPad.buttonV.justPressed #end)
+		if (FlxG.keys.justPressed.F12 #if mobile || virtualPad.getButton('buttonV').justPressed #end)
 			silhouettes.visible = !silhouettes.visible;
 
-		if ((FlxG.keys.justPressed.F1 #if mobile || virtualPad.buttonZ.justPressed #end)
+		if ((FlxG.keys.justPressed.F1 #if mobile || virtualPad.getButton('buttonZ').justPressed #end)
 			|| (helpBg.visible && FlxG.keys.justPressed.ESCAPE))
 		{
 			helpBg.visible = !helpBg.visible;

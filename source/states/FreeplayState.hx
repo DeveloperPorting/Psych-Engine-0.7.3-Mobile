@@ -176,7 +176,7 @@ class FreeplayState extends MusicBeatState
 		add(player);
 		
 		#if mobile
-		addVirtualPad(LEFT_FULL, FREEPLAY);
+		addVirtualPad('LEFT_FULL', 'FREEPLAY');
 		#end
 		
 		changeSelection();
@@ -196,7 +196,7 @@ class FreeplayState extends MusicBeatState
 		
 		#if mobile
 		removeVirtualPad();
-		addVirtualPad(LEFT_FULL, FREEPLAY);
+		addVirtualPad('LEFT_FULL', 'FREEPLAY');
 		#end
 	}
 
@@ -331,13 +331,13 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		if(FlxG.keys.justPressed.CONTROL #if mobile || virtualPad.buttonC.justPressed #end && !player.playingMusic)
+		if(FlxG.keys.justPressed.CONTROL #if mobile || virtualPad.getButton('buttonC').justPressed #end && !player.playingMusic)
 		{
 			persistentUpdate = false;
 			openSubState(new GameplayChangersSubstate());
 			#if mobile removeVirtualPad(); #end
 		}
-		else if(FlxG.keys.justPressed.SPACE #if mobile || virtualPad.buttonX.justPressed #end)
+		else if(FlxG.keys.justPressed.SPACE #if mobile || virtualPad.getButton('buttonX').justPressed #end)
 		{
 			if(instPlaying != curSelected && !player.playingMusic)
 			{
@@ -430,7 +430,7 @@ class FreeplayState extends MusicBeatState
 			DiscordClient.loadModRPC();
 			#end
 		}
-		else if(controls.RESET #if mobile || virtualPad.buttonR.justPressed #end && !player.playingMusic)
+		else if(controls.RESET #if mobile || virtualPad.getButton('buttonR').justPressed #end && !player.playingMusic)
 		{
 			persistentUpdate = false;
 			openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));

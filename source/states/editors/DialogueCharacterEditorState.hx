@@ -149,7 +149,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		updateCharTypeBox();
 
 		#if mobile
-		addVirtualPad(LEFT_FULL, A_B_C);
+		addVirtualPad('LEFT_FULL', 'A_B_C');
 		addVirtualPadCamera();
 		virtualPad.y = -300;
 		#end
@@ -590,7 +590,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		if (!blockInput && !animationDropDown.dropPanel.visible)
 		{
 			ClientPrefs.toggleVolumeKeys(true);
-			if (#if desktop FlxG.keys.justPressed.SPACE #else virtualPad.buttonA.justPressed #end
+			if (#if desktop FlxG.keys.justPressed.SPACE #else virtualPad.getButton('buttonA').justPressed #end
 				&& UI_mainbox.selected_tab_id == 'Character')
 			{
 				character.playAnim(character.jsonFile.animations[curAnim].anim);
@@ -601,7 +601,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 			// lots of Ifs lol get trolled
 			var offsetAdd:Int = 1;
 			var speed:Float = 300;
-			if (#if desktop FlxG.keys.pressed.SHIFT #else virtualPad.buttonB.pressed #end)
+			if (#if desktop FlxG.keys.pressed.SHIFT #else virtualPad.getButton('buttonB').pressed #end)
 			{
 				speed = 1200;
 				offsetAdd = 10;
@@ -636,19 +636,19 @@ class DialogueCharacterEditorState extends MusicBeatState
 				var moved:Bool = false;
 				var animShit:DialogueAnimArray = character.dialogueAnimations.get(curSelectedAnim);
 				var controlArrayLoop:Array<Bool> = [
-					#if desktop FlxG.keys.justPressed.A #else virtualPad.buttonLeft.justPressed #end,
-					#if desktop FlxG.keys.justPressed.W #else virtualPad.buttonUp.justPressed #end,
-					#if desktop FlxG.keys.justPressed.D #else virtualPad.buttonRight.justPressed #end,
-					#if desktop FlxG.keys.justPressed.S #else virtualPad.buttonDown.justPressed #end
+					#if desktop FlxG.keys.justPressed.A #else virtualPad.getButton('buttonLeft').justPressed #end,
+					#if desktop FlxG.keys.justPressed.W #else virtualPad.getButton('buttonUp').justPressed #end,
+					#if desktop FlxG.keys.justPressed.D #else virtualPad.getButton('buttonRight').justPressed #end,
+					#if desktop FlxG.keys.justPressed.S #else virtualPad.getButton('buttonDown').justPressed #end
 				];
 				var controlArrayIdle:Array<Bool> = [
-					#if desktop FlxG.keys.justPressed.LEFT #else virtualPad.buttonLeft.justPressed #end,
-					#if desktop FlxG.keys.justPressed.UP #else virtualPad.buttonUp.justPressed #end,
-					#if desktop FlxG.keys.justPressed.RIGHT #else virtualPad.buttonRight.justPressed #end,
-					#if desktop FlxG.keys.justPressed.DOWN #else virtualPad.buttonDown.justPressed #end
+					#if desktop FlxG.keys.justPressed.LEFT #else virtualPad.getButton('buttonLeft').justPressed #end,
+					#if desktop FlxG.keys.justPressed.UP #else virtualPad.getButton('buttonUp').justPressed #end,
+					#if desktop FlxG.keys.justPressed.RIGHT #else virtualPad.getButton('buttonRight').justPressed #end,
+					#if desktop FlxG.keys.justPressed.DOWN #else virtualPad.getButton('buttonDown').justPressed #end
 				];
 				#if mobile
-				if (virtualPad.buttonC.pressed)
+				if (virtualPad.getButton('buttonC').pressed)
 				{
 					for (i in 0...controlArrayLoop.length)
 					{

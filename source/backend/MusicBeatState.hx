@@ -38,7 +38,12 @@ class MusicBeatState extends FlxUIState
 	public var virtualPadCam:FlxCamera;
 	public var hitboxCam:FlxCamera;
 
-    public function addVirtualPad(DPad:MobileDPadMode, Action:MobileActionMode)
+	/**
+	 * Add the Virtual Pad to the screen.
+	 * @param DPad DPad JSON name (e.g. "LEFT_FULL")
+	 * @param Action Action JSON name (e.g. "A_B_C")
+	 */
+	public function addVirtualPad(DPad:String, Action:String)
 	{
 		virtualPad = new MobileVirtualPad(DPad, Action);
 		add(virtualPad);
@@ -71,6 +76,10 @@ class MusicBeatState extends FlxUIState
 		}
 	}
 
+	/**
+	 * Adds the Hitbox to the screen.
+	 * @param DefaultDrawTarget If the camera will be the standard target for drawing
+	 */
 	public function addMobileControls(DefaultDrawTarget:Bool = false)
 	{
 		hitbox = new MobileHitbox();
@@ -100,8 +109,8 @@ class MusicBeatState extends FlxUIState
 	}
 
 	override function destroy()
-    {
-        super.destroy();
+	{
+		super.destroy();
 		removeVirtualPad();
 		removeMobileControls();
 	}

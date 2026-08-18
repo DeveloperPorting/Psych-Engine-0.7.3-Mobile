@@ -5,9 +5,6 @@ import psychlua.FunkinLua;
 import psychlua.ModchartSprite;
 import psychlua.LuaUtils;
 
-import mobile.controls.MobileVirtualPad.MobileDPadMode;
-import mobile.controls.MobileVirtualPad.MobileActionMode;
-
 class MobileFunctions
 {
 	private static function getTargetState():Dynamic {
@@ -45,7 +42,7 @@ class MobileFunctions
 			btnName = "button" + button.charAt(0).toUpperCase() + button.substr(1);
 		}
 
-		var buttonObj:Dynamic = Reflect.getProperty(pad, btnName);
+		var buttonObj:Dynamic = pad.getButton(btnName);
 		if (buttonObj != null) {
 			var status:Bool = Reflect.getProperty(buttonObj, statusType);
 			return status == true;
@@ -148,13 +145,7 @@ class MobileFunctions
 		{
 			var target = getTargetState();
 			if (target != null) {
-				try {
-					var dPad:MobileDPadMode = Type.createEnum(MobileDPadMode, dPadMode);
-					var action:MobileActionMode = Type.createEnum(MobileActionMode, actionMode);
-					target.addVirtualPad(dPad, action);
-				} catch (e:Dynamic) {
-					FunkinLua.luaTrace("addVirtualPad: Error! Invalid DPadMode or ActionMode string.", false, false, 0xFFFF0000);
-				}
+				target.addVirtualPad(dPadMode, actionMode);
 			}
 		});
 

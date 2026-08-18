@@ -63,7 +63,7 @@ class MenuCharacterEditorState extends MusicBeatState
 		updateCharTypeBox();
 		
 		#if mobile
-		addVirtualPad(LEFT_FULL, A_B_C);
+		addVirtualPad('LEFT_FULL', 'A_B_C');
 		virtualPad.y -= 120;
 		#end
 
@@ -296,38 +296,38 @@ class MenuCharacterEditorState extends MusicBeatState
 		if (!blockInput)
 		{
 			ClientPrefs.toggleVolumeKeys(true);
-			if (FlxG.keys.justPressed.ESCAPE #if mobile || virtualPad.buttonB.justPressed #end)
+			if (FlxG.keys.justPressed.ESCAPE #if mobile || virtualPad.getButton('buttonB').justPressed #end)
 			{
 				MusicBeatState.switchState(new states.editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
 
 			var shiftMult:Int = 1;
-			if (FlxG.keys.pressed.SHIFT #if mobile || virtualPad.buttonC.pressed #end)
+			if (FlxG.keys.pressed.SHIFT #if mobile || virtualPad.getButton('buttonC').pressed #end)
 				shiftMult = 10;
 
-			if (FlxG.keys.justPressed.LEFT #if mobile || virtualPad.buttonLeft.justPressed #end)
+			if (FlxG.keys.justPressed.LEFT #if mobile || virtualPad.getButton('buttonLeft').justPressed #end)
 			{
 				characterFile.position[0] += shiftMult;
 				updateOffset();
 			}
-			if (FlxG.keys.justPressed.RIGHT #if mobile || virtualPad.buttonRight.justPressed #end)
+			if (FlxG.keys.justPressed.RIGHT #if mobile || virtualPad.getButton('buttonRight').justPressed #end)
 			{
 				characterFile.position[0] -= shiftMult;
 				updateOffset();
 			}
-			if (FlxG.keys.justPressed.UP #if mobile || virtualPad.buttonUp.justPressed #end)
+			if (FlxG.keys.justPressed.UP #if mobile || virtualPad.getButton('buttonUp').justPressed #end)
 			{
 				characterFile.position[1] += shiftMult;
 				updateOffset();
 			}
-			if (FlxG.keys.justPressed.DOWN #if mobile || virtualPad.buttonDown.justPressed #end)
+			if (FlxG.keys.justPressed.DOWN #if mobile || virtualPad.getButton('buttonDown').justPressed #end)
 			{
 				characterFile.position[1] -= shiftMult;
 				updateOffset();
 			}
 
-			if (FlxG.keys.justPressed.SPACE #if mobile || virtualPad.buttonA.justPressed #end && curTypeSelected == 1)
+			if (FlxG.keys.justPressed.SPACE #if mobile || virtualPad.getButton('buttonA').justPressed #end && curTypeSelected == 1)
 			{
 				grpWeekCharacters.members[curTypeSelected].animation.play('confirm', true);
 			}

@@ -93,7 +93,7 @@ class DialogueEditorState extends MusicBeatState
 		changeText();
 
 		#if mobile
-		addVirtualPad(LEFT_FULL, A_B_C);
+		addVirtualPad('LEFT_FULL', 'A_B_C');
 		#end
 
 		super.create();
@@ -426,7 +426,7 @@ class DialogueEditorState extends MusicBeatState
 		if (!blockInput)
 		{
 			ClientPrefs.toggleVolumeKeys(true);
-			if (#if desktop FlxG.keys.justPressed.SPACE #else virtualPad.buttonC.justPressed #end)
+			if (#if desktop FlxG.keys.justPressed.SPACE #else virtualPad.getButton('buttonC').justPressed #end)
 			{
 				reloadText(false);
 			}
@@ -438,12 +438,12 @@ class DialogueEditorState extends MusicBeatState
 			}
 			var negaMult:Array<Int> = [1, -1];
 			var controlAnim:Array<Bool> = [
-				#if desktop FlxG.keys.justPressed.W #else virtualPad.buttonUp.justPressed #end,
-				#if desktop FlxG.keys.justPressed.S #else virtualPad.buttonDown.justPressed #end
+				#if desktop FlxG.keys.justPressed.W #else virtualPad.getButton('buttonUp').justPressed #end,
+				#if desktop FlxG.keys.justPressed.S #else virtualPad.getButton('buttonDown').justPressed #end
 			];
 			var controlText:Array<Bool> = [
-				#if desktop FlxG.keys.justPressed.D #else virtualPad.buttonLeft.justPressed #end,
-				#if desktop FlxG.keys.justPressed.A #else virtualPad.buttonRight.justPressed #end
+				#if desktop FlxG.keys.justPressed.D #else virtualPad.getButton('buttonLeft').justPressed #end,
+				#if desktop FlxG.keys.justPressed.A #else virtualPad.getButton('buttonRight').justPressed #end
 			];
 			for (i in 0...controlAnim.length)
 			{
@@ -475,7 +475,7 @@ class DialogueEditorState extends MusicBeatState
 				}
 			}
 
-			if (#if desktop FlxG.keys.justPressed.O #else virtualPad.buttonA.justPressed #end)
+			if (#if desktop FlxG.keys.justPressed.O #else virtualPad.getButton('buttonA').justPressed #end)
 			{
 				dialogueFile.dialogue.remove(dialogueFile.dialogue[curSelected]);
 				if (dialogueFile.dialogue.length < 1) // You deleted everything, dumbo!
@@ -484,7 +484,7 @@ class DialogueEditorState extends MusicBeatState
 				}
 				changeText();
 			}
-			else if (#if desktop FlxG.keys.justPressed.P #else virtualPad.buttonB.justPressed #end)
+			else if (#if desktop FlxG.keys.justPressed.P #else virtualPad.getButton('buttonB').justPressed #end)
 			{
 				dialogueFile.dialogue.insert(curSelected + 1, copyDefaultLine());
 				changeText(1);

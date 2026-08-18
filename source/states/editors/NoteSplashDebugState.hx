@@ -156,12 +156,12 @@ class NoteSplashDebugState extends MusicBeatState
 			Press ENTER twice to save to the loaded Note Splash PNG's folder\n
 			A/D change selected note - Arrow Keys to change offset (Hold shift for 10x)\n
 			Ctrl + C/V - Copy & Paste", 16);
-			#else
+		#else
      	var text:FlxText = new FlxText(0, 520, FlxG.width, "Press Y to Reset animation\n
 			Press A twice to save to the loaded Note Splash PNG's folder\n
 			UP/DOWN change selected note - Arrow Keys to change offset (Hold Z for 10x)\n
 			C/V - Copy & Paste", 16);
-			#end
+		#end
 
 		savedText = new FlxText(0, 340, FlxG.width, '', 24);
 		savedText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -183,7 +183,7 @@ class NoteSplashDebugState extends MusicBeatState
 		changeSelection();
 
 		#if mobile
-		addVirtualPad(LEFT_FULL, NOTE_SPLASH_DEBUG);
+		addVirtualPad('LEFT_FULL', 'NOTE_SPLASH_DEBUG');
 		virtualPad.buttonUp.y -= 370;
         virtualPad.buttonDown.y -= 370;
         virtualPad.buttonLeft.y -= 370;
@@ -214,7 +214,7 @@ class NoteSplashDebugState extends MusicBeatState
 		cast(stepperMinFps.text_field, FlxInputText).hasFocus = cast(stepperMaxFps.text_field, FlxInputText).hasFocus = false;
 
 		var notTyping:Bool = !nameInputText.hasFocus && !imageInputText.hasFocus;
-		if (controls.BACK #if mobile || virtualPad.buttonB.justPressed #end && notTyping)
+		if (controls.BACK #if mobile || virtualPad.getButton('buttonB').justPressed #end && notTyping)
 		{
 			MusicBeatState.switchState(new MasterEditorMenu());
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -225,9 +225,9 @@ class NoteSplashDebugState extends MusicBeatState
 		if (!notTyping)
 			return;
 
-		if (FlxG.keys.justPressed.A #if mobile || virtualPad.buttonUp.justPressed #end)
+		if (FlxG.keys.justPressed.A #if mobile || virtualPad.getButton('buttonUp').justPressed #end)
 			changeSelection(-1);
-		else if (FlxG.keys.justPressed.D #if mobile || virtualPad.buttonDown.justPressed #end)
+		else if (FlxG.keys.justPressed.D #if mobile || virtualPad.getButton('buttonDown').justPressed #end)
 			changeSelection(1);
 
 		if (maxAnims < 1)
@@ -237,17 +237,17 @@ class NoteSplashDebugState extends MusicBeatState
 		{
 			var movex = 0;
 			var movey = 0;
-			if (FlxG.keys.justPressed.LEFT #if mobile || virtualPad.buttonLeft2.justPressed #end)
+			if (FlxG.keys.justPressed.LEFT #if mobile || virtualPad.getButton('buttonLeft2').justPressed #end)
 				movex = -1;
-			else if (FlxG.keys.justPressed.RIGHT #if mobile || virtualPad.buttonRight2.justPressed #end)
+			else if (FlxG.keys.justPressed.RIGHT #if mobile || virtualPad.getButton('buttonRight').justPressed #end)
 				movex = 1;
 
-			if (FlxG.keys.justPressed.UP #if mobile || virtualPad.buttonUp2.justPressed #end)
+			if (FlxG.keys.justPressed.UP #if mobile || virtualPad.getButton('buttonUp2').justPressed #end)
 				movey = 1;
-			else if (FlxG.keys.justPressed.DOWN #if mobile || virtualPad.buttonDown2.justPressed #end)
+			else if (FlxG.keys.justPressed.DOWN #if mobile || virtualPad.getButton('buttonDown2').justPressed #end)
 				movey = -1;
 
-			if (FlxG.keys.pressed.SHIFT #if mobile || virtualPad.buttonZ.pressed #end)
+			if (FlxG.keys.pressed.SHIFT #if mobile || virtualPad.getButton('buttonZ').pressed #end)
 			{
 				movex *= 10;
 				movey *= 10;
@@ -265,7 +265,7 @@ class NoteSplashDebugState extends MusicBeatState
 		// Copy & Paste
 		if (FlxG.keys.pressed.CONTROL)
 		{
-			if (FlxG.keys.justPressed.C #if mobile || virtualPad.buttonC.justPressed #end)
+			if (FlxG.keys.justPressed.C #if mobile || virtualPad.getButton('buttonC').justPressed #end)
 			{
 				var arr:Array<Float> = selectedArray();
 				if (copiedArray == null)
@@ -273,7 +273,7 @@ class NoteSplashDebugState extends MusicBeatState
 				copiedArray[0] = arr[0];
 				copiedArray[1] = arr[1];
 			}
-			else if (FlxG.keys.justPressed.V #if mobile || virtualPad.buttonV.justPressed #end && copiedArray != null)
+			else if (FlxG.keys.justPressed.V #if mobile || virtualPad.getButton('buttonV').justPressed #end && copiedArray != null)
 			{
 				var offs:Array<Float> = selectedArray();
 				offs[0] = copiedArray[0];
@@ -292,7 +292,7 @@ class NoteSplashDebugState extends MusicBeatState
 				savedText.visible = false;
 		}
 
-		if (FlxG.keys.justPressed.ENTER #if mobile || virtualPad.buttonA.justPressed #end)
+		if (FlxG.keys.justPressed.ENTER #if mobile || virtualPad.getButton('buttonA').justPressed #end)
 		{
 			#if desktop
 			savedText.text = 'Press ENTER again to save.';
@@ -315,18 +315,18 @@ class NoteSplashDebugState extends MusicBeatState
 		}
 
 		// Reset anim & change anim
-		if (FlxG.keys.justPressed.SPACE #if mobile || virtualPad.buttonY.justPressed #end)
+		if (FlxG.keys.justPressed.SPACE #if mobile || virtualPad.getButton('buttonY').justPressed #end)
 			changeAnim();
-		else if (FlxG.keys.justPressed.S #if mobile || virtualPad.buttonLeft.justPressed #end)
+		else if (FlxG.keys.justPressed.S #if mobile || virtualPad.getButton('buttonLeft').justPressed #end)
 			changeAnim(-1);
-		else if (FlxG.keys.justPressed.W #if mobile || virtualPad.buttonRight.justPressed #end)
+		else if (FlxG.keys.justPressed.W #if mobile || virtualPad.getButton('buttonRight').justPressed #end)
 			changeAnim(1);
 
 		// Force frame
 		var updatedFrame:Bool = false;
-		if (updatedFrame = FlxG.keys.justPressed.Q #if mobile || virtualPad.buttonX.justPressed #end)
+		if (updatedFrame = FlxG.keys.justPressed.Q #if mobile || virtualPad.getButton('buttonX').justPressed #end)
 			forceFrame--;
-		else if (updatedFrame = FlxG.keys.justPressed.E #if mobile || virtualPad.buttonD.justPressed #end)
+		else if (updatedFrame = FlxG.keys.justPressed.E #if mobile || virtualPad.getButton('buttonD').justPressed #end)
 			forceFrame++;
 
 		if (updatedFrame)

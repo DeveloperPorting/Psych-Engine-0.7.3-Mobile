@@ -175,7 +175,7 @@ class ModsMenuState extends MusicBeatState
 			FlxG.autoPause = false;
 			
 			#if mobile
-			addVirtualPad(NONE, B);
+			addVirtualPad('NONE', 'B');
 			virtualPad.y -= 215;
 			#end
 		
@@ -300,7 +300,7 @@ class ModsMenuState extends MusicBeatState
 		_lastControllerMode = controls.controllerMode;
 		
 		#if mobile
-		addVirtualPad(UP_DOWN, B);
+		addVirtualPad('UP_DOWN', 'B');
 		virtualPad.y -= 215;
 		#end
 
