@@ -271,7 +271,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Restart Song":
 					restartSong();
 				case "Chart Editor":
-				    #if mobile controls.isInSubstate = false; #end
+				    //#if mobile controls.isInSubstate = false; #end
 					PlayState.instance.openChartEditor();
 				case "Leave Charting Mode":
 					restartSong();
@@ -305,7 +305,7 @@ class PauseSubState extends MusicBeatSubstate
 				case 'Options':
 					PlayState.instance.paused = true; // For lua
 					PlayState.instance.vocals.volume = 0;
-					#if mobile controls.isInSubstate = false; #end
+					//#if mobile controls.isInSubstate = false; #end
 					MusicBeatState.switchState(new OptionsState());
 					if(ClientPrefs.data.pauseMusic != 'None')
 					{
@@ -318,7 +318,7 @@ class PauseSubState extends MusicBeatSubstate
 					#if DISCORD_ALLOWED DiscordClient.resetClientID(); #end
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
-					#if mobile controls.isInSubstate = false; #end
+					//#if mobile controls.isInSubstate = false; #end
 
 					Mods.loadTopMod();
 					if(PlayState.isStoryMode)

@@ -1686,10 +1686,10 @@ class ChartingState extends MusicBeatState
 	{
 		curStep = recalculateSteps();
 		
-		#if mobile
+		/*#if mobile
 		if (controls.isInSubstate)
             controls.isInSubstate = false;
-        #end
+        #end*/
 
 		if(FlxG.sound.music.time < 0) {
 			FlxG.sound.music.pause();
