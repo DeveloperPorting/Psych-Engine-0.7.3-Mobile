@@ -187,11 +187,6 @@ class FreeplayState extends MusicBeatState
 	override function closeSubState() {
 		changeSelection(0, false);
 		persistentUpdate = true;
-		/*#if mobile
-		new FlxTimer().start(0.1, function(tmr:FlxTimer) {
-			controls.isInSubstate = false;
-		});
-		#end*/
 		super.closeSubState();
 		
 		#if mobile

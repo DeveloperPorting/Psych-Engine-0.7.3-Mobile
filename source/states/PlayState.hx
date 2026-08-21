@@ -1561,7 +1561,6 @@ class PlayState extends MusicBeatState
 	override function openSubState(SubState:FlxSubState)
 	{
 		stagesFunc(function(stage:BaseStage) stage.openSubState(SubState));
-		//#if mobile controls.isInSubstate = true; #end
 		if (paused)
 		{
 			if (FlxG.sound.music != null)
@@ -1580,8 +1579,6 @@ class PlayState extends MusicBeatState
 	override function closeSubState()
 	{
 		super.closeSubState();
-		
-		//#if mobile controls.isInSubstate = false; #end
 		
 		stagesFunc(function(stage:BaseStage) stage.closeSubState());
 		if (paused)

@@ -203,7 +203,7 @@ class Controls
 	private inline function processMobileInput(source:Dynamic, keys:Array<TouchInputID>, mode:InputMode):Bool {
 		if (keys == null || source == null) return false;
 
-		if (haxe.Timer.stamp() - _substateCloseTime < 0.1) return false;
+		if (haxe.Timer.stamp() - _substateCloseTime < 0.01) return false;
 
 		var isTriggered:Bool = switch (mode) {
 			case PRESSED: source.isAnyPressed(keys);

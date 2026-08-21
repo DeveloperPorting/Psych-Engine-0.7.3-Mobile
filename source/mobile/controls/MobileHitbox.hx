@@ -34,7 +34,7 @@ class MobileHitbox extends TouchInputManager
 	public var buttonAction:TouchButton;
 	public var buttonActionTwo:TouchButton;
 
-	private final alphaTarget:Float = 0.6; 
+	private final alphaTarget:Float = 0.5; 
 	
 	private var _cachedGraphics:Map<String, flixel.graphics.FlxGraphic> = new Map();
 
