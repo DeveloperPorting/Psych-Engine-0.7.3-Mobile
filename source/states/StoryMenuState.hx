@@ -185,11 +185,11 @@ class StoryMenuState extends MusicBeatState
 	override function closeSubState() {
 		persistentUpdate = true;
 		changeWeek();
-		#if mobile
+		/*#if mobile
 		new FlxTimer().start(0.1, function(tmr:FlxTimer) {
 			controls.isInSubstate = false;
 		});
-		#end
+		#end*/
 		super.closeSubState();
 		
 		#if mobile

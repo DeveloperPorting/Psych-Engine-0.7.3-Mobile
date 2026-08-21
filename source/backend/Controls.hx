@@ -168,11 +168,24 @@ class Controls
 	}
 	
 	#if mobile
-	public var isInSubstate:Bool = false;
+	private var _wasInSubstate:Bool = false;
+	private var _substateCloseTime:Float = 0;
 
 	private var activeState(get, never):Dynamic;
-	@:noCompletion private inline function get_activeState():Dynamic {
-		return isInSubstate ? MusicBeatSubstate.instance : MusicBeatState.instance;
+	@:noCompletion private function get_activeState():Dynamic {
+		var currentSubState = FlxG.state.subState;
+		
+		if (currentSubState != null && Std.isOfType(currentSubState, MusicBeatSubstate)) {
+			_wasInSubstate = true;
+			return MusicBeatSubstate.instance;
+		}
+		
+		if (_wasInSubstate) {
+			_wasInSubstate = false;
+			_substateCloseTime = haxe.Timer.stamp();
+		}
+		
+		return MusicBeatState.instance;
 	}
 
 	private var activePad(get, never):Dynamic;
@@ -183,11 +196,14 @@ class Controls
 
 	private var activeHitbox(get, never):Dynamic;
 	@:noCompletion private inline function get_activeHitbox():Dynamic {
-		return (MusicBeatState.instance != null) ? MusicBeatState.instance.hitbox : null;
+		var state = activeState;
+		return (state != null) ? state.hitbox : null;
 	}
 
 	private inline function processMobileInput(source:Dynamic, keys:Array<TouchInputID>, mode:InputMode):Bool {
 		if (keys == null || source == null) return false;
+
+		if (haxe.Timer.stamp() - _substateCloseTime < 0.1) return false;
 
 		var isTriggered:Bool = switch (mode) {
 			case PRESSED: source.isAnyPressed(keys);
@@ -226,7 +242,7 @@ class Controls
 	private function hitboxJustReleased(keys:Array<TouchInputID>):Bool {
 		return processMobileInput(activeHitbox, keys, JUST_RELEASED);
 	}
-	#end
+	#end	
 
 	// IGNORE THESE
 	public static var instance:Controls;

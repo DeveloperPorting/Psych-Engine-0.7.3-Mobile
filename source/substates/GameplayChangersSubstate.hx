@@ -130,7 +130,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 
 		changeSelection();
 		#if mobile
-		controls.isInSubstate = true;
+		//controls.isInSubstate = true;
 		addVirtualPad('LEFT_FULL', 'A_B_C');
 		addVirtualPadCamera();
 		#end
