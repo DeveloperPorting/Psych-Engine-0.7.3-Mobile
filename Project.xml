@@ -194,7 +194,7 @@
 
 	<!-- _________________________________ Custom _______________________________ -->
 		
-    <java path="source" if="android || ios"/>
+    <java path="source" if="android"/>
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 
