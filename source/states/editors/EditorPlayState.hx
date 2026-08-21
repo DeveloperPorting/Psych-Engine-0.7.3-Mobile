@@ -168,10 +168,10 @@ class EditorPlayState extends MusicBeatSubstate
 			return;
 		}
 		
-		#if mobile
+		/*#if mobile
 		if (!controls.isInSubstate)
             controls.isInSubstate = true;
-        #end
+        #end*/
 		
 		if (startingSong)
 		{
