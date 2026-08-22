@@ -171,39 +171,49 @@ class Controls
 	private var _wasInSubstate:Bool = false;
 	private var _substateCloseTime:Float = 0;
 
-	private var activeState(get, never):Dynamic;
-	@:noCompletion private function get_activeState():Dynamic {
-		var currentSubState = FlxG.state.subState;
-		
-		if (currentSubState != null && Std.isOfType(currentSubState, MusicBeatSubstate)) {
-			_wasInSubstate = true;
-			return MusicBeatSubstate.instance;
-		}
-		
-		if (_wasInSubstate) {
-			_wasInSubstate = false;
-			_substateCloseTime = haxe.Timer.stamp();
-		}
-		
-		return MusicBeatState.instance;
-	}
-
 	private var activePad(get, never):Dynamic;
 	@:noCompletion private inline function get_activePad():Dynamic {
-		var state = activeState;
-		return (state != null) ? state.virtualPad : null;
+		var sub = FlxG.state.subState;
+		
+		if (sub != null && Std.isOfType(sub, MusicBeatSubstate)) {
+			var mbs:MusicBeatSubstate = cast sub;
+			if (mbs.virtualPad != null) return mbs.virtualPad;
+		}
+		
+		return (MusicBeatState.instance != null) ? MusicBeatState.instance.virtualPad : null;
 	}
 
 	private var activeHitbox(get, never):Dynamic;
 	@:noCompletion private inline function get_activeHitbox():Dynamic {
-		var state = activeState;
-		return (state != null) ? state.hitbox : null;
+		var sub = FlxG.state.subState;
+		
+		if (sub != null && Std.isOfType(sub, MusicBeatSubstate)) {
+			var mbs:MusicBeatSubstate = cast sub;
+			if (mbs.hitbox != null) return mbs.hitbox;
+		}
+		
+		return (MusicBeatState.instance != null) ? MusicBeatState.instance.hitbox : null;
 	}
 
 	private inline function processMobileInput(source:Dynamic, keys:Array<TouchInputID>, mode:InputMode):Bool {
 		if (keys == null || source == null) return false;
 
-		if (haxe.Timer.stamp() - _substateCloseTime < 0.01) return false;
+		var sub = FlxG.state.subState;
+		var hasSubControls = false;
+		
+		if (sub != null && Std.isOfType(sub, MusicBeatSubstate)) {
+			var mbs:MusicBeatSubstate = cast sub;
+			hasSubControls = (mbs.virtualPad != null || mbs.hitbox != null);
+		}
+
+		if (hasSubControls) {
+			_wasInSubstate = true;
+		} else if (_wasInSubstate) {
+			_wasInSubstate = false;
+			_substateCloseTime = haxe.Timer.stamp();
+		}
+
+		if (haxe.Timer.stamp() - _substateCloseTime < 0.1) return false;
 
 		var isTriggered:Bool = switch (mode) {
 			case PRESSED: source.isAnyPressed(keys);
@@ -242,7 +252,7 @@ class Controls
 	private function hitboxJustReleased(keys:Array<TouchInputID>):Bool {
 		return processMobileInput(activeHitbox, keys, JUST_RELEASED);
 	}
-	#end	
+	#end
 
 	// IGNORE THESE
 	public static var instance:Controls;
