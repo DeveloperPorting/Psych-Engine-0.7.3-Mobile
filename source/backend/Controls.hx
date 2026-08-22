@@ -195,7 +195,7 @@ class Controls
 		return (MusicBeatState.instance != null) ? MusicBeatState.instance.hitbox : null;
 	}
 
-	private inline function processMobileInput(source:Dynamic, keys:Array<TouchInputID>, mode:InputMode):Bool {
+	private function processMobileInput(source:Dynamic, keys:Array<TouchInputID>, mode:InputMode):Bool {
 		if (keys == null || source == null) return false;
 
 		var sub = FlxG.state.subState;
