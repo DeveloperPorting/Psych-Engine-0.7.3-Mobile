@@ -172,7 +172,7 @@ class Controls
 	private var _substateCloseTime:Float = 0;
 
 	private var activePad(get, never):Dynamic;
-	@:noCompletion private inline function get_activePad():Dynamic {
+	@:noCompletion private function get_activePad():Dynamic {
 		var sub = FlxG.state.subState;
 		
 		if (sub != null && Std.isOfType(sub, MusicBeatSubstate)) {
@@ -184,7 +184,7 @@ class Controls
 	}
 
 	private var activeHitbox(get, never):Dynamic;
-	@:noCompletion private inline function get_activeHitbox():Dynamic {
+	@:noCompletion private function get_activeHitbox():Dynamic {
 		var sub = FlxG.state.subState;
 		
 		if (sub != null && Std.isOfType(sub, MusicBeatSubstate)) {
