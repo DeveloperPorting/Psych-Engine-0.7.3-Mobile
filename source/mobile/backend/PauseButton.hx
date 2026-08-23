@@ -3,9 +3,9 @@ package mobile.backend;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
-import flixel.math.FlxMath;
 import openfl.display.BitmapData;
 import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxDestroyUtil;
 
 /**
@@ -18,10 +18,9 @@ class PauseButton extends FlxSprite
 	public var onClick:Void->Void;
 	
 	private var buttonCamera:FlxCamera;
-
-	private var targetScale:Float = 0.8;
-	private final defaultScale:Float = 0.8;
-	private final pressScale:Float = 0.6;
+	private var _isAnimating:Bool = false;
+	private var _isFadingOut:Bool = false;
+	private final defaultAlpha:Float = 0.7;
 
 	public function new(x:Float = 0, y:Float = 0, ?onClick:Void->Void)
 	{
@@ -33,6 +32,7 @@ class PauseButton extends FlxSprite
 		#if mobile
 		var bitmap:BitmapData = null;
 		var path:String = 'assets/mobile/images/pauseButton.png';
+		var xmlPath:String = 'assets/mobile/images/pauseButton.xml';
 
 		try
 		{
@@ -43,13 +43,19 @@ class PauseButton extends FlxSprite
 
 		if (bitmap != null)
 		{
-			loadGraphic(FlxGraphic.fromBitmapData(bitmap));
+			var graphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap);
+			
+			frames = FlxAtlasFrames.fromSparrow(graphic, openfl.utils.Assets.getText(xmlPath));
+			
+			animation.addByPrefix('idle', 'pause0000', 24, false);
+			animation.addByPrefix('press', 'pause', 24, false);
+			animation.play('idle');
 		}
 
 		antialiasing = true;
 		scrollFactor.set();
-		alpha = 0.7;
-		scale.set(defaultScale, defaultScale);
+		alpha = defaultAlpha;
+		scale.set(0.8, 0.8);
 		updateHitbox();
 
 		this.onClick = onClick;
@@ -70,31 +76,58 @@ class PauseButton extends FlxSprite
 	#if mobile
 	private function globalUpdate():Void
 	{
-		if (!visible || !active) return;
+		if (!active) return;
 
-		scale.x = FlxMath.lerp(scale.x, targetScale, FlxG.elapsed * 15);
-		scale.y = FlxMath.lerp(scale.y, targetScale, FlxG.elapsed * 15);
+		var hasSubState:Bool = (FlxG.state != null && FlxG.state.subState != null);
 
-		var isPressed = false;
-
-		for (touch in FlxG.touches.list)
+		if (hasSubState && _isAnimating)
 		{
-			if (touch.overlaps(this, buttonCamera))
+			animation.update(FlxG.elapsed);
+		}
+
+		if (_isAnimating && animation.finished)
+		{
+			_isAnimating = false;
+			_isFadingOut = true;
+		}
+
+		if (_isFadingOut)
+		{
+			alpha -= FlxG.elapsed * 3;
+			if (alpha <= 0)
 			{
-				isPressed = true;
-				
-				if (touch.justPressed)
+				alpha = 0;
+				_isFadingOut = false;
+			}
+		}
+
+		if (!hasSubState)
+		{
+			_isAnimating = false;
+			_isFadingOut = false;
+			
+			if (alpha < defaultAlpha)
+			{
+				alpha += FlxG.elapsed * 4;
+				if (alpha >= defaultAlpha) alpha = defaultAlpha;
+			}
+
+			if (frames != null && animation.name != 'idle') animation.play('idle');
+		}
+
+		if (alpha >= defaultAlpha && !_isAnimating && !_isFadingOut && !hasSubState)
+		{
+			for (touch in FlxG.touches.list)
+			{
+				if (touch.justPressed && touch.overlaps(this, buttonCamera))
 				{
-					targetScale = pressScale;
+					_isAnimating = true;
+					if (frames != null) animation.play('press');
+					
 					if (onClick != null) onClick();
 					break;
 				}
 			}
-		}
-
-		if (!isPressed)
-		{
-			targetScale = defaultScale;
 		}
 	}
 	#end
