@@ -584,7 +584,6 @@ class PlayState extends MusicBeatState
 				}
 			});
 			add(pauseButton);
-			pauseButton.cameras = [camOther];
 		}
 		#else
 		var pauseButton = new mobile.backend.PauseButton(0, 0, function()
@@ -595,7 +594,6 @@ class PlayState extends MusicBeatState
 			}
 		});
 		add(pauseButton);
-		pauseButton.cameras = [camOther];
 		#end
 		
 		addMobileControls(false);
