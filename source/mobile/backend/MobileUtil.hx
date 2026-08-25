@@ -7,7 +7,7 @@ import mobile.backend.flixel.TouchButton;
 
 class MobileUtil {
 	public static var isTouchActive(default, null):Bool = true;
-    
+	
 	public static var mobileIDs:Map<String, Array<TouchInputID>> = [
 		'note_up'		=> [NOTE_UP],
 		'note_left'		=> [NOTE_LEFT],
@@ -76,5 +76,58 @@ class MobileUtil {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Formats the button name. If the user enters "a", it changes to "buttonA".
+	 */
+	private static function formatButtonName(name:String):String 
+	{
+		if (!StringTools.startsWith(name, "button")) {
+			return "button" + name.charAt(0).toUpperCase() + name.substr(1);
+		}
+		return name;
+	}
+
+	/**
+	 * Check if the button actually exists on the current VirtualPad.
+	 */
+	public static function hasButton(pad:Dynamic, buttonName:String):Bool 
+	{
+		if (pad == null || pad.getButton == null) return false;
+		return pad.getButton(formatButtonName(buttonName)) != null;
+	}
+
+	/**
+	 * Securely checks if the button was just pressed.
+	 * Usage: MobileUtil.justPressed(virtualPad, 'a');
+	 */
+	public static function justPressed(pad:Dynamic, buttonName:String):Bool 
+	{
+		if (pad == null || pad.getButton == null) return false;
+		var btn = pad.getButton(formatButtonName(buttonName));
+		return (btn != null) ? btn.justPressed : false;
+	}
+
+	/**
+	 * It securely checks if the button is being held down (Pressed).
+	 * Usage: MobileUtil.pressed(virtualPad, 'up');
+	 */
+	public static function pressed(pad:Dynamic, buttonName:String):Bool 
+	{
+		if (pad == null || pad.getButton == null) return false;
+		var btn = pad.getButton(formatButtonName(buttonName));
+		return (btn != null) ? btn.pressed : false;
+	}
+
+	/**
+	 * Check securely if the button has just been released.
+	 * Usage: MobileUtil.justReleased(virtualPad, 'b');
+	 */
+	public static function justReleased(pad:Dynamic, buttonName:String):Bool 
+	{
+		if (pad == null || pad.getButton == null) return false;
+		var btn = pad.getButton(formatButtonName(buttonName));
+		return (btn != null) ? btn.justReleased : false;
 	}
 }
